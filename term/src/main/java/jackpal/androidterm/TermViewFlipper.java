@@ -80,27 +80,27 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         }
     }
 
-    public TermViewFlipper(Context context) {
+    public TermViewFlipper(final Context context) {
         super(context);
         commonConstructor(context);
     }
 
-    public TermViewFlipper(Context context, AttributeSet attrs) {
+    public TermViewFlipper(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         commonConstructor(context);
     }
 
-    private void commonConstructor(Context context) {
+    private void commonConstructor(final Context context) {
         this.context = context;
         callbacks = new LinkedList<UpdateCallback>();
 
         updateVisibleRect();
         Rect visible = mVisibleRect;
         mChildParams = new LayoutParams(visible.width(), visible.height(),
-            Gravity.TOP|Gravity.LEFT);
+            Gravity.TOP | Gravity.LEFT);
     }
 
-    public void updatePrefs(TermSettings settings) {
+    public void updatePrefs(final TermSettings settings) {
         boolean statusBarVisible = settings.showStatusBar();
         int[] colorScheme = settings.getColorScheme();
         setBackgroundColor(colorScheme[1]);
@@ -111,11 +111,11 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         return new ViewFlipperIterator();
     }
 
-    public void addCallback(UpdateCallback callback) {
+    public void addCallback(final UpdateCallback callback) {
         callbacks.add(callback);
     }
 
-    public void removeCallback(UpdateCallback callback) {
+    public void removeCallback(final UpdateCallback callback) {
         callbacks.remove(callback);
     }
 
@@ -170,7 +170,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
             return;
         }
 
-        String title = context.getString(R.string.window_title,getDisplayedChild()+1);
+        String title = context.getString(R.string.window_title, getDisplayedChild() + 1);
         if (session instanceof GenericTermSession) {
             title = ((GenericTermSession) session).getTitle(title);
         }
@@ -203,7 +203,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     }
 
     @Override
-    public void setDisplayedChild(int position) {
+    public void setDisplayedChild(final int position) {
         pauseCurrentView();
         super.setDisplayedChild(position);
         showTitle();
@@ -212,12 +212,12 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     }
 
     @Override
-    public void addView(View v, int index) {
+    public void addView(final View v, final int index) {
         super.addView(v, index, mChildParams);
     }
 
     @Override
-    public void addView(View v) {
+    public void addView(final View v) {
         super.addView(v, mChildParams);
     }
 
@@ -288,13 +288,13 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
      * (Note: Not always called on Android < 2.2)
      */
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
         adjustChildSize();
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(final Canvas canvas) {
         if (mRedoLayout) {
             requestLayout();
             mRedoLayout = false;

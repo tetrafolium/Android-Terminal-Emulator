@@ -40,7 +40,7 @@ public class ShellTermSession extends GenericTermSession {
     private static final int PROCESS_EXITED = 1;
     private Handler mMsgHandler = new Handler() {
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(final Message msg) {
             if (!isRunning()) {
                 return;
             }
@@ -50,7 +50,7 @@ public class ShellTermSession extends GenericTermSession {
         }
     };
 
-    public ShellTermSession(TermSettings settings, String initialCommand) throws IOException {
+    public ShellTermSession(final TermSettings settings, final String initialCommand) throws IOException {
         super(ParcelFileDescriptor.open(new File("/dev/ptmx"), ParcelFileDescriptor.MODE_READ_WRITE),
                 settings, false);
 
@@ -101,7 +101,7 @@ public class ShellTermSession extends GenericTermSession {
         mProcId = createSubprocess(settings.getShell(), env);
     }
 
-    private String checkPath(String path) {
+    private String checkPath(final String path) {
         String[] dirs = path.split(":");
         StringBuilder checkedPath = new StringBuilder(path.length());
         for (String dirname : dirs) {
@@ -111,24 +111,24 @@ public class ShellTermSession extends GenericTermSession {
                 checkedPath.append(":");
             }
         }
-        return checkedPath.substring(0, checkedPath.length()-1);
+        return checkedPath.substring(0, checkedPath.length() - 1);
     }
 
     @Override
-    public void initializeEmulator(int columns, int rows) {
+    public void initializeEmulator(final int columns, final int rows) {
         super.initializeEmulator(columns, rows);
 
         mWatcherThread.start();
         sendInitialCommand(mInitialCommand);
     }
 
-    private void sendInitialCommand(String initialCommand) {
+    private void sendInitialCommand(final String initialCommand) {
         if (initialCommand.length() > 0) {
             write(initialCommand + '\r');
         }
     }
 
-    private int createSubprocess(String shell, String[] env) throws IOException {
+    private int createSubprocess(final String shell, final String[] env) throws IOException {
         ArrayList<String> argList = parse(shell);
         String arg0;
         String[] args;
@@ -153,7 +153,7 @@ public class ShellTermSession extends GenericTermSession {
         return TermExec.createSubprocess(mTermFd, arg0, args, env);
     }
 
-    private ArrayList<String> parse(String cmd) {
+    private ArrayList<String> parse(final String cmd) {
         final int PLAIN = 0;
         final int WHITESPACE = 1;
         final int INQUOTE = 2;
@@ -166,7 +166,7 @@ public class ShellTermSession extends GenericTermSession {
             if (state == PLAIN) {
                 if (Character.isWhitespace(c)) {
                     result.add(builder.toString());
-                    builder.delete(0,builder.length());
+                    builder.delete(0, builder.length());
                     state = WHITESPACE;
                 } else if (c == '"') {
                     state = INQUOTE;
@@ -201,7 +201,7 @@ public class ShellTermSession extends GenericTermSession {
         return result;
     }
 
-    private void onProcessExit(int result) {
+    private void onProcessExit(final int result) {
         onProcessExit();
     }
 

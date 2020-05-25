@@ -30,7 +30,7 @@ public class TermPreferences extends PreferenceActivity {
     private static final String CATEGORY_SCREEN_KEY = "screen";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Load the preferences from an XML resource
@@ -56,7 +56,7 @@ public class TermPreferences extends PreferenceActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
         case ActionBarCompat.ID_HOME:
             // Action bar home button selected

@@ -59,7 +59,7 @@ class UnicodeTranscript {
     private char[] tmpLine;
     private StyleRow tmpColor;
 
-    public UnicodeTranscript(int columns, int totalRows, int screenRows, int defaultStyle) {
+    public UnicodeTranscript(final int columns, final int totalRows, final int screenRows, final int defaultStyle) {
         mColumns = columns;
         mTotalRows = totalRows;
         mScreenRows = screenRows;
@@ -71,7 +71,7 @@ class UnicodeTranscript {
         mDefaultStyle = defaultStyle;
     }
 
-    public void setDefaultStyle(int defaultStyle) {
+    public void setDefaultStyle(final int defaultStyle) {
         mDefaultStyle = defaultStyle;
     }
 
@@ -102,10 +102,10 @@ class UnicodeTranscript {
      * @return The row corresponding to the input argument in the private
      *         coordinate system.
      */
-    private int externalToInternalRow(int extRow) {
+    private int externalToInternalRow(final int extRow) {
         if (extRow < -mActiveTranscriptRows || extRow > mScreenRows) {
-            String errorMessage = "externalToInternalRow "+ extRow +
-                " " + mScreenRows + " " + mActiveTranscriptRows;
+            String errorMessage = "externalToInternalRow " + extRow
+                + " " + mScreenRows + " " + mActiveTranscriptRows;
             Log.e(TAG, errorMessage);
             throw new IllegalArgumentException(errorMessage);
         }
@@ -121,11 +121,11 @@ class UnicodeTranscript {
         }
     }
 
-    public void setLineWrap(int row) {
+    public void setLineWrap(final int row) {
         mLineWrap[externalToInternalRow(row)] = true;
     }
 
-    public boolean getLineWrap(int row) {
+    public boolean getLineWrap(final int row) {
         return mLineWrap[externalToInternalRow(row)];
     }
 
@@ -143,7 +143,7 @@ class UnicodeTranscript {
      *         the caller may "resize" the screen by copying out all the data
      *         and placing it into a new transcript of the correct size.
      */
-    public boolean resize(int newColumns, int newRows, int[] cursor) {
+    public boolean resize(final int newColumns, final int newRows, final int[] cursor) {
         if (newColumns != mColumns || newRows > mTotalRows) {
             return false;
         }
@@ -245,7 +245,7 @@ class UnicodeTranscript {
      * @param len The number of lines to be copied.
      * @param shift The offset of the destination from the source.
      */
-    private void blockCopyLines(int src, int len, int shift) {
+    private void blockCopyLines(final int src, final int len, final int shift) {
         int totalRows = mTotalRows;
 
         int dst;
@@ -288,7 +288,7 @@ class UnicodeTranscript {
      * @param bottomMargin One line after the last line that is scrolled.
      * @param style the style for the newly exposed line.
      */
-    public void scroll(int topMargin, int bottomMargin, int style) {
+    public void scroll(final int topMargin, final int bottomMargin, final int style) {
         // Separate out reasons so that stack crawls help us
         // figure out which condition was violated.
         if (topMargin > bottomMargin - 1) {
@@ -369,7 +369,7 @@ class UnicodeTranscript {
      * @param dx destination X coordinate
      * @param dy destination Y coordinate
      */
-    public void blockCopy(int sx, int sy, int w, int h, int dx, int dy) {
+    public void blockCopy(final int sx, final int sy, final int w, final int h, final int dx, final int dy) {
         if (sx < 0 || sx + w > mColumns || sy < 0 || sy + h > mScreenRows
                 || dx < 0 || dx + w > mColumns || dy < 0
                 || dy + h > mScreenRows) {
@@ -468,7 +468,7 @@ class UnicodeTranscript {
      * @param h height
      * @param val value to set.
      */
-    public void blockSet(int sx, int sy, int w, int h, int val, int style) {
+    public void blockSet(final int sx, final int sy, final int w, final int h, final int val, final int style) {
         if (sx < 0 || sx + w > mColumns || sy < 0 || sy + h > mScreenRows) {
             Log.e(TAG, "illegal arguments! " + sx + " " + sy + " " + w + " " + h + " " + val + " " + mColumns + " " + mScreenRows);
             throw new IllegalArgumentException();
@@ -510,7 +510,7 @@ class UnicodeTranscript {
      * @param codePoint A Unicode code point.
      * @return The display width of the Unicode code point.
      */
-    public static int charWidth(int codePoint) {
+    public static int charWidth(final int codePoint) {
         // Early out for ASCII printable characters
         if (codePoint > 31 && codePoint < 127) {
             return 1;
@@ -530,8 +530,8 @@ class UnicodeTranscript {
             return 0;
         }
 
-        if ((codePoint >= 0x1160 && codePoint <= 0x11FF) ||
-            (codePoint >= 0xD7B0 && codePoint <= 0xD7FF)) {
+        if ((codePoint >= 0x1160 && codePoint <= 0x11FF)
+            || (codePoint >= 0xD7B0 && codePoint <= 0xD7FF)) {
             if (AndroidCompat.SDK >= HANGUL_CONJOINING_MIN_SDK) {
                 /* Treat Hangul jamo medial vowels and final consonants as
                  * combining characters with width 0 to make jamo composition
@@ -570,7 +570,7 @@ class UnicodeTranscript {
         return 1;
     }
 
-    public static int charWidth(char cHigh, char cLow) {
+    public static int charWidth(final char cHigh, final char cLow) {
         return charWidth(Character.toCodePoint(cHigh, cLow));
     }
 
@@ -582,10 +582,10 @@ class UnicodeTranscript {
      * @param index The index into the array at which the code point starts.
      * @return The display width of the Unicode code point.
      */
-    public static int charWidth(char[] chars, int index) {
+    public static int charWidth(final char[] chars, final int index) {
         char c = chars[index];
         if (Character.isHighSurrogate(c)) {
-            return charWidth(c, chars[index+1]);
+            return charWidth(c, chars[index + 1]);
         } else {
             return charWidth(c);
         }
@@ -605,19 +605,19 @@ class UnicodeTranscript {
      * @param x2 One after the last screen position that's wanted
      * @return A char[] array containing the requested contents
      */
-    public char[] getLine(int row, int x1, int x2) {
+    public char[] getLine(final int row, final int x1, final int x2) {
         return getLine(row, x1, x2, false);
     }
 
     /**
      * Get the whole contents of a line of the transcript.
      */
-    public char[] getLine(int row) {
+    public char[] getLine(final int row) {
         return getLine(row, 0, mColumns, true);
     }
 
-    private char[] getLine(int row, int x1, int x2, boolean strictBounds) {
-        if (row < -mActiveTranscriptRows || row > mScreenRows-1) {
+    private char[] getLine(final int row, final int x1, final int x2, final boolean strictBounds) {
+        if (row < -mActiveTranscriptRows || row > mScreenRows - 1) {
             throw new IllegalArgumentException();
         }
 
@@ -634,7 +634,7 @@ class UnicodeTranscript {
                 return (char[]) mLines[row];
             } else {
                 if (tmpLine == null || tmpLine.length < columns + 1) {
-                    tmpLine = new char[columns+1];
+                    tmpLine = new char[columns + 1];
                 }
                 int length = x2 - x1;
                 System.arraycopy(mLines[row], x1, tmpLine, 0, length);
@@ -674,7 +674,7 @@ class UnicodeTranscript {
         int length = x2 - x1;
 
         if (tmpLine == null || tmpLine.length < length + 1) {
-            tmpLine = new char[length+1];
+            tmpLine = new char[length + 1];
         }
         System.arraycopy(rawLine, x1, tmpLine, 0, length);
         tmpLine[length] = 0;
@@ -686,16 +686,16 @@ class UnicodeTranscript {
      * The returned object may be a pointer to a temporary buffer, only good
      * until the next call to getLineColor.
      */
-    public StyleRow getLineColor(int row, int x1, int x2) {
+    public StyleRow getLineColor(final int row, final int x1, final int x2) {
         return getLineColor(row, x1, x2, false);
     }
 
-    public StyleRow getLineColor(int row) {
+    public StyleRow getLineColor(final int row) {
         return getLineColor(row, 0, mColumns, true);
     }
 
-    private StyleRow getLineColor(int row, int x1, int x2, boolean strictBounds) {
-        if (row < -mActiveTranscriptRows || row > mScreenRows-1) {
+    private StyleRow getLineColor(final int row, final int x1, final int x2, final boolean strictBounds) {
+        if (row < -mActiveTranscriptRows || row > mScreenRows - 1) {
             throw new IllegalArgumentException();
         }
 
@@ -704,42 +704,42 @@ class UnicodeTranscript {
         StyleRow tmp = tmpColor;
         if (color != null) {
             int columns = mColumns;
-            if (!strictBounds && mLines[row] != null &&
-                    mLines[row] instanceof FullUnicodeLine) {
+            if (!strictBounds && mLines[row] != null
+                    && mLines[row] instanceof FullUnicodeLine) {
                 FullUnicodeLine line = (FullUnicodeLine) mLines[row];
                 /* If either the start or the end column is in the middle of
                  * an East Asian wide character, include the appropriate column
                  * of style information */
-                if (x1 > 0 && line.findStartOfColumn(x1-1) == line.findStartOfColumn(x1)) {
+                if (x1 > 0 && line.findStartOfColumn(x1 - 1) == line.findStartOfColumn(x1)) {
                     --x1;
                 }
-                if (x2 < columns - 1 && line.findStartOfColumn(x2+1) == line.findStartOfColumn(x2)) {
+                if (x2 < columns - 1 && line.findStartOfColumn(x2 + 1) == line.findStartOfColumn(x2)) {
                     ++x2;
                 }
             }
             if (x1 == 0 && x2 == columns) {
                 return color;
             }
-            color.copy(x1, tmp, 0, x2-x1);
+            color.copy(x1, tmp, 0, x2 - x1);
             return tmp;
         } else {
             return null;
         }
     }
 
-    boolean isBasicLine(int row) {
-        if (row < -mActiveTranscriptRows || row > mScreenRows-1) {
+    boolean isBasicLine(final int row) {
+        if (row < -mActiveTranscriptRows || row > mScreenRows - 1) {
             throw new IllegalArgumentException();
         }
 
         return (mLines[externalToInternalRow(row)] instanceof char[]);
     }
 
-    public boolean getChar(int row, int column) {
+    public boolean getChar(final int row, final int column) {
         return getChar(row, column, 0);
     }
 
-    public boolean getChar(int row, int column, int charIndex) {
+    public boolean getChar(final int row, final int column, final int charIndex) {
         return getChar(row, column, charIndex, new char[1], 0);
     }
 
@@ -754,8 +754,8 @@ class UnicodeTranscript {
      * @param offset The offset in the array at which the character will be placed.
      * @return Whether or not there are characters following this one in the column.
      */
-    public boolean getChar(int row, int column, int charIndex, char[] out, int offset) {
-        if (row < -mActiveTranscriptRows || row > mScreenRows-1) {
+    public boolean getChar(final int row, final int column, final int charIndex, final char[] out, final int offset) {
+        if (row < -mActiveTranscriptRows || row > mScreenRows - 1) {
             throw new IllegalArgumentException();
         }
         row = externalToInternalRow(row);
@@ -771,11 +771,11 @@ class UnicodeTranscript {
         return line.getChar(column, charIndex, out, offset);
     }
 
-    private boolean isBasicChar(int codePoint) {
+    private boolean isBasicChar(final int codePoint) {
         return !(charWidth(codePoint) != 1 || Character.charCount(codePoint) != 1);
     }
 
-    private char[] allocateBasicLine(int row, int columns) {
+    private char[] allocateBasicLine(final int row, final int columns) {
         char[] line = new char[columns];
 
         // Fill the line with blanks
@@ -790,7 +790,7 @@ class UnicodeTranscript {
         return line;
     }
 
-    private FullUnicodeLine allocateFullLine(int row, int columns) {
+    private FullUnicodeLine allocateFullLine(final int row, final int columns) {
         FullUnicodeLine line = new FullUnicodeLine(columns);
 
         mLines[row] = line;
@@ -800,7 +800,7 @@ class UnicodeTranscript {
         return line;
     }
 
-    public boolean setChar(int column, int row, int codePoint, int style) {
+    public boolean setChar(final int column, final int row, final int codePoint, final int style) {
         if (!setChar(column, row, codePoint)) {
             return false;
         }
@@ -811,7 +811,7 @@ class UnicodeTranscript {
         return true;
     }
 
-    public boolean setChar(int column, int row, int codePoint) {
+    public boolean setChar(final int column, final int row, final int codePoint) {
         if (row >= mScreenRows || column >= mColumns) {
             Log.e(TAG, "illegal arguments! " + row + " " + column + " " + mScreenRows + " " + mColumns);
             throw new IllegalArgumentException();
@@ -882,7 +882,7 @@ class FullUnicodeLine {
     private short[] mOffset;
     private int mColumns;
 
-    public FullUnicodeLine(int columns) {
+    public FullUnicodeLine(final int columns) {
         commonConstructor(columns);
         char[] text = mText;
         // Fill in the line with blanks
@@ -893,17 +893,17 @@ class FullUnicodeLine {
         mOffset[0] = (short) columns;
     }
 
-    public FullUnicodeLine(char[] basicLine) {
+    public FullUnicodeLine(final char[] basicLine) {
         commonConstructor(basicLine.length);
         System.arraycopy(basicLine, 0, mText, 0, mColumns);
         // Store the space used
         mOffset[0] = (short) basicLine.length;
     }
 
-    private void commonConstructor(int columns) {
+    private void commonConstructor(final int columns) {
         mColumns = columns;
         mOffset = new short[columns];
-        mText = new char[(int)(SPARE_CAPACITY_FACTOR*columns)];
+        mText = new char[(int) (SPARE_CAPACITY_FACTOR * columns)];
     }
 
     public int getSpaceUsed() {
@@ -914,7 +914,7 @@ class FullUnicodeLine {
         return mText;
     }
 
-    public int findStartOfColumn(int column) {
+    public int findStartOfColumn(final int column) {
         if (column == 0) {
             return 0;
         } else {
@@ -922,7 +922,7 @@ class FullUnicodeLine {
         }
     }
 
-    public boolean getChar(int column, int charIndex, char[] out, int offset) {
+    public boolean getChar(final int column, final int charIndex, final char[] out, final int offset) {
         int pos = findStartOfColumn(column);
         int length;
         if (column + 1 < mColumns) {
@@ -937,7 +937,7 @@ class FullUnicodeLine {
         return (charIndex + 1 < length);
     }
 
-    public void setChar(int column, int codePoint) {
+    public void setChar(final int column, final int codePoint) {
         int columns = mColumns;
         if (column < 0 || column >= columns) {
             throw new IllegalArgumentException();
@@ -971,7 +971,7 @@ class FullUnicodeLine {
         if (wasExtraColForWideChar && column + 1 < columns) {
             oldLen = findStartOfColumn(column + 1) - pos;
         } else if (column + oldCharWidth < columns) {
-            oldLen = findStartOfColumn(column+oldCharWidth) - pos;
+            oldLen = findStartOfColumn(column + oldCharWidth) - pos;
         } else {
             oldLen = spaceUsed - pos;
         }

@@ -45,7 +45,7 @@ public class ServiceForegroundCompat {
     private Method mStopForeground;
     private int notifyId;
 
-    private void invokeMethod(Object receiver, Method method, Object... args) {
+    private void invokeMethod(final Object receiver, final Method method, final Object... args) {
         try {
             method.invoke(receiver, args);
         } catch (IllegalAccessException e) {
@@ -58,7 +58,7 @@ public class ServiceForegroundCompat {
         }
     }
 
-    public void startForeground(int id, Notification notification) {
+    public void startForeground(final int id, final Notification notification) {
         if (mStartForeground != null) {
             invokeMethod(service, mStartForeground, id, notification);
             return;
@@ -69,7 +69,7 @@ public class ServiceForegroundCompat {
         notifyId = id;
     }
 
-    public void stopForeground(boolean removeNotify) {
+    public void stopForeground(final boolean removeNotify) {
         if (mStopForeground != null) {
             invokeMethod(service, mStopForeground, removeNotify);
             return;
@@ -81,9 +81,9 @@ public class ServiceForegroundCompat {
         invokeMethod(service, mSetForeground, Boolean.FALSE);
     }
 
-    public ServiceForegroundCompat(Service service) {
+    public ServiceForegroundCompat(final Service service) {
         this.service = service;
-        mNM = (NotificationManager)service.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNM = (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
 
         Class<?> clazz = service.getClass();
 

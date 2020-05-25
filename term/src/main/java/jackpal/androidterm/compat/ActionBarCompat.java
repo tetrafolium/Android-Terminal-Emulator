@@ -39,7 +39,7 @@ public abstract class ActionBarCompat {
         public abstract boolean onNavigationItemSelected(int position, long id);
     }
 
-    public static ActionBarCompat wrap(Object actionBar) {
+    public static ActionBarCompat wrap(final Object actionBar) {
         if (actionBar != null) {
             if (AndroidCompat.SDK >= 11) {
                 return new ActionBarApi11OrLater(actionBar);
@@ -69,14 +69,14 @@ public abstract class ActionBarCompat {
 class ActionBarApi11OrLater extends ActionBarCompat {
     private ActionBar bar;
 
-    ActionBarApi11OrLater(Object bar) {
+    ActionBarApi11OrLater(final Object bar) {
         this.bar = (ActionBar) bar;
     }
 
-    private ActionBar.OnNavigationListener wrapOnNavigationCallback(OnNavigationListener callback) {
+    private ActionBar.OnNavigationListener wrapOnNavigationCallback(final OnNavigationListener callback) {
         final OnNavigationListener cb = callback;
         return new ActionBar.OnNavigationListener() {
-            public boolean onNavigationItemSelected(int position, long id) {
+            public boolean onNavigationItemSelected(final int position, final long id) {
                 return cb.onNavigationItemSelected(position, id);
             }
         };
@@ -114,31 +114,31 @@ class ActionBarApi11OrLater extends ActionBarCompat {
         return bar.isShowing();
     }
 
-    public void setDisplayOptions(int options) {
+    public void setDisplayOptions(final int options) {
         bar.setDisplayOptions(options);
     }
 
-    public void setDisplayOptions(int options, int mask) {
+    public void setDisplayOptions(final int options, final int mask) {
         bar.setDisplayOptions(options, mask);
     }
 
-    public void setListNavigationCallbacks(SpinnerAdapter adapter, OnNavigationListener callback) {
+    public void setListNavigationCallbacks(final SpinnerAdapter adapter, final OnNavigationListener callback) {
         bar.setListNavigationCallbacks(adapter, wrapOnNavigationCallback(callback));
     }
 
-    public void setNavigationMode(int mode) {
+    public void setNavigationMode(final int mode) {
         bar.setNavigationMode(mode);
     }
 
-    public void setSelectedNavigationItem(int position) {
+    public void setSelectedNavigationItem(final int position) {
         bar.setSelectedNavigationItem(position);
     }
 
-    public void setTitle(int resId) {
+    public void setTitle(final int resId) {
         bar.setTitle(resId);
     }
 
-    public void setTitle(CharSequence title) {
+    public void setTitle(final CharSequence title) {
         bar.setTitle(title);
     }
 

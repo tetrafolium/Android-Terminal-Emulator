@@ -49,20 +49,20 @@ public class WindowList extends ListActivity {
      * Used by layout xml.
      */
     public static class CloseButton extends ImageView {
-        public CloseButton(Context context) {
+        public CloseButton(final Context context) {
             super(context);
         }
 
-        public CloseButton(Context context, AttributeSet attrs) {
+        public CloseButton(final Context context, final AttributeSet attrs) {
             super(context, attrs);
         }
 
-        public CloseButton(Context context, AttributeSet attrs, int style) {
+        public CloseButton(final Context context, final AttributeSet attrs, final int style) {
             super(context, attrs, style);
         }
 
         @Override
-        public void setPressed(boolean pressed) {
+        public void setPressed(final boolean pressed) {
             if (pressed && ((View) getParent()).isPressed()) {
                 return;
             }
@@ -71,19 +71,19 @@ public class WindowList extends ListActivity {
     }
 
     private ServiceConnection mTSConnection = new ServiceConnection() {
-        public void onServiceConnected(ComponentName className, IBinder service) {
+        public void onServiceConnected(final ComponentName className, final IBinder service) {
             TermService.TSBinder binder = (TermService.TSBinder) service;
             mTermService = binder.getService();
             populateList();
         }
 
-        public void onServiceDisconnected(ComponentName arg0) {
+        public void onServiceDisconnected(final ComponentName arg0) {
             mTermService = null;
         }
     };
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(final Bundle icicle) {
         super.onCreate(icicle);
 
         ListView listView = getListView();
@@ -142,15 +142,15 @@ public class WindowList extends ListActivity {
     }
 
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+    protected void onListItemClick(final ListView l, final View v, final int position, final long id) {
         Intent data = new Intent();
-        data.putExtra(Term.EXTRA_WINDOW_ID, position-1);
+        data.putExtra(Term.EXTRA_WINDOW_ID, position - 1);
         setResult(RESULT_OK, data);
         finish();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
         case ActionBarCompat.ID_HOME:
             // Action bar home button selected

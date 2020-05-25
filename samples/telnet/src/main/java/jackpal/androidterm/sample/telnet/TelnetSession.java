@@ -47,16 +47,16 @@ public class TelnetSession extends TermSession
 
     public static final int IAC = 255;
 
-    public static final int CMD_SE = 240;	// SE -- end of parameters
-    public static final int CMD_NOP = 241;	// NOP
-    public static final int CMD_MARK = 242;	// data mark
-    public static final int CMD_BRK = 243;	// send BREAK to terminal
-    public static final int CMD_IP = 244;	// Interrupt Process
-    public static final int CMD_AO = 245;	// Abort Output
-    public static final int CMD_AYT = 246;	// Are You There
-    public static final int CMD_EC = 247;	// Erase Character
-    public static final int CMD_EL = 248;	// Erase Line
-    public static final int CMD_GA = 249;	// Go Ahead (clear to send)
+    public static final int CMD_SE = 240;       // SE -- end of parameters
+    public static final int CMD_NOP = 241;      // NOP
+    public static final int CMD_MARK = 242;     // data mark
+    public static final int CMD_BRK = 243;      // send BREAK to terminal
+    public static final int CMD_IP = 244;       // Interrupt Process
+    public static final int CMD_AO = 245;       // Abort Output
+    public static final int CMD_AYT = 246;      // Are You There
+    public static final int CMD_EC = 247;       // Erase Character
+    public static final int CMD_EL = 248;       // Erase Line
+    public static final int CMD_GA = 249;       // Go Ahead (clear to send)
     public static final int CMD_SB = 250;	// SB -- begin parameters
     public static final int CMD_WILL = 251;	// used in option negotiation
     public static final int CMD_WONT = 252;	// used in option negotiation
@@ -92,7 +92,7 @@ public class TelnetSession extends TermSession
      * Create a TelnetSession to handle the telnet protocol and terminal
      * emulation, using an existing InputStream and OutputStream.
      */
-    public TelnetSession(InputStream termIn, OutputStream termOut) {
+    public TelnetSession(final InputStream termIn, final OutputStream termOut) {
         setTermIn(termIn);
         setTermOut(termOut);
     }
@@ -104,7 +104,7 @@ public class TelnetSession extends TermSession
      * and all other CRs must be sent as CR NUL).
      */
     @Override
-    public void write(byte[] bytes, int offset, int count) {
+    public void write(final byte[] bytes, final int offset, final int count) {
         // Count the number of CRs
         int numCRs = 0;
         for (int i = offset; i < offset + count; ++i) {
@@ -148,7 +148,7 @@ public class TelnetSession extends TermSession
     private int mWriteBufLen = 0;
 
     /* Send data to the server, buffering it first if necessary */
-    private void doWrite(byte[] data, int offset, int count) {
+    private void doWrite(final byte[] data, final int offset, final int count) {
         if (peerSuppressedGoAhead) {
            // No need to buffer -- send it straight to the server
            super.write(data, offset, count);
@@ -176,10 +176,10 @@ public class TelnetSession extends TermSession
     }
 
     /* Echoes local input from the emulator back to the emulator screen. */
-    private void doLocalEcho(byte[] data) {
+    private void doLocalEcho(final byte[] data) {
         if (DEBUG) {
-            Log.d(TAG, "echoing " +
-                    Arrays.toString(data) + " back to terminal");
+            Log.d(TAG, "echoing "
+                    + Arrays.toString(data) + " back to terminal");
         }
         appendToEmulator(data, 0, data.length);
         notifyUpdate();
@@ -190,7 +190,7 @@ public class TelnetSession extends TermSession
      * terminal emulator.
      */
     @Override
-    public void processInput(byte[] buffer, int offset, int count) {
+    public void processInput(final byte[] buffer, final int offset, final int count) {
         int lastByte = mLastInputByteProcessed;
         for (int i = offset; i < offset + count; ++i) {
             // need to interpret the byte as unsigned -- thanks Java!
@@ -229,7 +229,7 @@ public class TelnetSession extends TermSession
                  * In full-duplex operation (option SUPPRESS-GO-AHEAD enabled),
                  * does nothing.
                  */
-                byte[] cmdGa = { (byte) IAC, (byte) CMD_GA };
+                byte[] cmdGa = {(byte) IAC, (byte) CMD_GA };
                 if (!peerSuppressedGoAhead) {
                     if (!suppressGoAhead) {
                         doWrite(cmdGa, 0, cmdGa.length);
@@ -261,7 +261,7 @@ public class TelnetSession extends TermSession
     }
 
     byte[] mOneByte = new byte[1];
-    private void doEchoInput(int input) {
+    private void doEchoInput(final int input) {
         if (DEBUG) {
             Log.d(TAG, "echoing " + input + " to remote end");
         }
@@ -273,7 +273,7 @@ public class TelnetSession extends TermSession
     /**
      * Interpreter for Telnet commands.
      */
-    private void doTelnetCommand(int curByte) {
+    private void doTelnetCommand(final int curByte) {
         /* Handle parameter lists */
         if (mMultipleParameters) {
             switch (curByte) {
@@ -307,19 +307,19 @@ public class TelnetSession extends TermSession
         switch (curByte) {
         case CMD_EC: // EC -- erase character
             // ESC [ D (VT100 cursor left)
-            byte[] cmdLeft = { (byte) 27, (byte) '[', (byte) 'D' };
+            byte[] cmdLeft = {(byte) 27, (byte) '[', (byte) 'D' };
             // ESC [ P (VT100 erase char at cursor)
-            byte[] cmdErase = { (byte) 27, (byte) '[', (byte) 'P' };
+            byte[] cmdErase = {(byte) 27, (byte) '[', (byte) 'P' };
             super.processInput(cmdLeft, 0, cmdLeft.length);
             super.processInput(cmdErase, 0, cmdErase.length);
             break;
         case CMD_EL: // EL -- erase line
             // ESC [ 2 K (VT100 clear whole line)
-            byte[] cmdEl = { (byte) 27, (byte) '[', (byte) '2', (byte) 'K' };
+            byte[] cmdEl = {(byte) 27, (byte) '[', (byte) '2', (byte) 'K' };
             super.processInput(cmdEl, 0, cmdEl.length);
             break;
         case IAC: // send the IAC character to terminal
-            byte[] iac = { (byte) IAC };
+            byte[] iac = {(byte) IAC };
             super.processInput(iac, 0, iac.length);
             break;
         case CMD_SB: // SB -- more parameters follow option
@@ -361,7 +361,7 @@ public class TelnetSession extends TermSession
         mMultipleParameters = false;
     }
 
-    private void addMultiParam(int curByte) {
+    private void addMultiParam(final int curByte) {
         // unimplemented
     }
 
@@ -415,7 +415,7 @@ public class TelnetSession extends TermSession
      *   echo the input we receive from it back over the network, but we refuse
      *   to do so.
      */
-    private void handleWillOption(int curByte) {
+    private void handleWillOption(final int curByte) {
         switch (curByte) {
         case OPTION_ECHO: // WILL ECHO
             // We don't ever request DO ECHO, so this must be a request
@@ -443,7 +443,7 @@ public class TelnetSession extends TermSession
         finishTelnetCommand();
     }
 
-    private void handleWontOption(int curByte) {
+    private void handleWontOption(final int curByte) {
         switch (curByte) {
         case OPTION_ECHO: // WON'T ECHO
             // We don't ever request DO ECHO, so this must be a request
@@ -468,7 +468,7 @@ public class TelnetSession extends TermSession
         finishTelnetCommand();
     }
 
-    private void handleDoOption(int curByte) {
+    private void handleDoOption(final int curByte) {
         switch (curByte) {
         case OPTION_ECHO: // DO ECHO
             /* Other Telnet clients like netkit-telnet refuse this request when
@@ -499,7 +499,7 @@ public class TelnetSession extends TermSession
         finishTelnetCommand();
     }
 
-    private void handleDontOption(int curByte) {
+    private void handleDontOption(final int curByte) {
         switch (curByte) {
         case OPTION_ECHO: // DON'T ECHO
             // We don't ever request DON'T ECHO, so this must be a request
@@ -525,12 +525,12 @@ public class TelnetSession extends TermSession
     }
 
     /* Send an option negotiation command */
-    private void sendOption(int command, int opt) {
+    private void sendOption(final int command, final int opt) {
         if (DEBUG) {
             Log.d(TAG, "sending command: " + command + " " + opt);
         }
         // option negotiation needs to bypass the write buffer
-        byte[] buffer = { (byte) IAC, (byte) command, (byte) opt };
+        byte[] buffer = {(byte) IAC, (byte) command, (byte) opt };
         super.write(buffer, 0, buffer.length);
     }
 

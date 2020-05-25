@@ -19,12 +19,12 @@ final class StyleRow {
     /** Initially null, will be allocated when needed. */
     private byte[] mData;
 
-    StyleRow(int style, int columns) {
+    StyleRow(final int style, final int columns) {
         mStyle = style;
         mColumns = columns;
     }
 
-    void set(int column, int style) {
+    void set(final int column, final int style) {
         if (style == mStyle && mData == null) {
             return;
         }
@@ -32,7 +32,7 @@ final class StyleRow {
         setStyle(column, style);
     }
 
-    int get(int column) {
+    int get(final int column) {
         if (mData == null) {
             return mStyle;
         }
@@ -50,7 +50,7 @@ final class StyleRow {
         return mStyle;
     }
 
-    void copy(int start, StyleRow dst, int offset, int len) {
+    void copy(final int start, final StyleRow dst, final int offset, final int len) {
         // fast case
         if (mData == null && dst.mData == null && start == 0 && offset == 0
                 && len == mColumns) {
@@ -61,7 +61,7 @@ final class StyleRow {
         // all the same for simplicity.
         ensureData();
         dst.ensureData();
-        System.arraycopy(mData, 3*start, dst.mData, 3*offset, 3*len);
+        System.arraycopy(mData, 3 * start, dst.mData, 3 * offset, 3 * len);
 
     }
 
@@ -72,25 +72,25 @@ final class StyleRow {
     }
 
     private void allocate() {
-        mData = new byte[3*mColumns];
+        mData = new byte[3 * mColumns];
         for (int i = 0; i < mColumns; i++) {
             setStyle(i, mStyle);
         }
     }
 
-    private int getStyle(int column) {
+    private int getStyle(final int column) {
         int index = 3 * column;
         byte[] line = mData;
-        return line[index] & 0xff | (line[index+1] & 0xff) << 8
-                | (line[index+2] & 0xff) << 16;
+        return line[index] & 0xff | (line[index + 1] & 0xff) << 8
+                | (line[index + 2] & 0xff) << 16;
     }
 
-    private void setStyle(int column, int value) {
+    private void setStyle(final int column, final int value) {
         int index = 3 * column;
         byte[] line = mData;
         line[index] = (byte) (value & 0xff);
-        line[index+1] = (byte) ((value >> 8) & 0xff);
-        line[index+2] = (byte) ((value >> 16) & 0xff);
+        line[index + 1] = (byte) ((value >> 8) & 0xff);
+        line[index + 2] = (byte) ((value >> 16) & 0xff);
     }
 
 

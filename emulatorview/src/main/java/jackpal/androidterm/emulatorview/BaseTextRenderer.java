@@ -318,7 +318,7 @@ abstract class BaseTextRenderer implements TextRenderer {
     private Bitmap mWorkBitmap;
     private int mCursorBitmapCursorMode = -1;
 
-    public BaseTextRenderer(ColorScheme scheme) {
+    public BaseTextRenderer(final ColorScheme scheme) {
         if (scheme == null) {
             scheme = defaultColorScheme;
         }
@@ -372,11 +372,11 @@ abstract class BaseTextRenderer implements TextRenderer {
         mScaleMatrix = new Matrix();
     }
 
-    public void setReverseVideo(boolean reverseVideo) {
+    public void setReverseVideo(final boolean reverseVideo) {
         mReverseVideo = reverseVideo;
     }
 
-    private void setDefaultColors(ColorScheme scheme) {
+    private void setDefaultColors(final ColorScheme scheme) {
         mPalette = cloneDefaultColors();
         mPalette[TextStyle.ciForeground] = scheme.getForeColor();
         mPalette[TextStyle.ciBackground] = scheme.getBackColor();
@@ -391,8 +391,8 @@ abstract class BaseTextRenderer implements TextRenderer {
         return clone;
     }
 
-    protected void drawCursorImp(Canvas canvas, float x, float y, float charWidth, float charHeight,
-            int cursorMode) {
+    protected void drawCursorImp(final Canvas canvas, final float x, final float y, final float charWidth, final float charHeight,
+            final int cursorMode) {
         if (cursorMode == 0) {
             canvas.drawRect(x,  y - charHeight, x + charWidth, y, mCursorScreenPaint);
             return;
@@ -434,7 +434,7 @@ abstract class BaseTextRenderer implements TextRenderer {
         canvas.drawBitmap(mCursorBitmap, x, y - charHeight, mCursorScreenPaint);
     }
 
-    private void drawCursorHelper(Canvas canvas, Path path, int mode, int shift) {
+    private void drawCursorHelper(final Canvas canvas, final Path path, final int mode, final int shift) {
         switch ((mode >> shift) & MODE_MASK) {
         case MODE_ON:
             canvas.drawPath(path, mCursorStrokePaint);

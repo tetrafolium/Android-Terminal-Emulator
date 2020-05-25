@@ -32,11 +32,11 @@ import jackpal.androidterm.util.SessionList;
 public class WindowListAdapter extends BaseAdapter implements UpdateCallback {
     private SessionList mSessions;
 
-    public WindowListAdapter(SessionList sessions) {
+    public WindowListAdapter(final SessionList sessions) {
         setSessions(sessions);
     }
 
-    public void setSessions(SessionList sessions) {
+    public void setSessions(final SessionList sessions) {
         mSessions = sessions;
 
         if (sessions != null) {
@@ -55,15 +55,15 @@ public class WindowListAdapter extends BaseAdapter implements UpdateCallback {
         }
     }
 
-    public Object getItem(int position) {
+    public Object getItem(final int position) {
         return mSessions.get(position);
     }
 
-    public long getItemId(int position) {
+    public long getItemId(final int position) {
         return position;
     }
 
-    protected String getSessionTitle(int position, String defaultTitle) {
+    protected String getSessionTitle(final int position, final String defaultTitle) {
         TermSession session = mSessions.get(position);
         if (session != null && session instanceof GenericTermSession) {
             return ((GenericTermSession) session).getTitle(defaultTitle);
@@ -72,19 +72,19 @@ public class WindowListAdapter extends BaseAdapter implements UpdateCallback {
         }
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, final View convertView, final ViewGroup parent) {
         Activity act = findActivityFromContext(parent.getContext());
         View child = act.getLayoutInflater().inflate(R.layout.window_list_item, parent, false);
         View close = child.findViewById(R.id.window_list_close);
 
         TextView label = (TextView) child.findViewById(R.id.window_list_label);
-        String defaultTitle = act.getString(R.string.window_title, position+1);
+        String defaultTitle = act.getString(R.string.window_title, position + 1);
         label.setText(getSessionTitle(position, defaultTitle));
 
         final SessionList sessions = mSessions;
         final int closePosition = position;
         close.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 TermSession session = sessions.remove(closePosition);
                 if (session != null) {
                     session.finish();
@@ -100,7 +100,7 @@ public class WindowListAdapter extends BaseAdapter implements UpdateCallback {
         notifyDataSetChanged();
     }
 
-    private static Activity findActivityFromContext(Context context) {
+    private static Activity findActivityFromContext(final Context context) {
         if (context == null) {
             return null;
         } else if (context instanceof Activity) {

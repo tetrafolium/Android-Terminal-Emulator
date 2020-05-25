@@ -209,7 +209,7 @@ public class KeycodeConstants {
     /** Key code constant: Search key. */
     public static final int KEYCODE_SEARCH          = 84;
     /** Key code constant: Play/Pause media key. */
-    public static final int KEYCODE_MEDIA_PLAY_PAUSE= 85;
+    public static final int KEYCODE_MEDIA_PLAY_PAUSE = 85;
     /** Key code constant: Stop media key. */
     public static final int KEYCODE_MEDIA_STOP      = 86;
     /** Key code constant: Play Next media key. */

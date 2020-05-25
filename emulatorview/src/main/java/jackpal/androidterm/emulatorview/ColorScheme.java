@@ -50,16 +50,16 @@ public class ColorScheme {
         }
     }
 
-    private static int distance(int a, int b) {
+    private static int distance(final int a, final int b) {
         return channelDistance(a, b, 0) * 3 + channelDistance(a, b, 1) * 5
                 + channelDistance(a, b, 2);
     }
 
-    private static int channelDistance(int a, int b, int channel) {
+    private static int channelDistance(final int a, final int b, final int channel) {
         return Math.abs(getChannel(a, channel) - getChannel(b, channel));
     }
 
-    private static int getChannel(int color, int channel) {
+    private static int getChannel(final int color, final int channel) {
         return 0xff & (color >> ((2 - channel) * 8));
     }
 
@@ -69,7 +69,7 @@ public class ColorScheme {
      * @param foreColor The foreground color as an ARGB hex value.
      * @param backColor The background color as an ARGB hex value.
      */
-    public ColorScheme(int foreColor, int backColor) {
+    public ColorScheme(final int foreColor, final int backColor) {
         this.foreColor = foreColor;
         this.backColor = backColor;
         setDefaultCursorColors();
@@ -83,7 +83,7 @@ public class ColorScheme {
      * @param cursorForeColor The cursor foreground color as an ARGB hex value.
      * @param cursorBackColor The cursor foreground color as an ARGB hex value.
      */
-    public ColorScheme(int foreColor, int backColor, int cursorForeColor, int cursorBackColor) {
+    public ColorScheme(final int foreColor, final int backColor, final int cursorForeColor, final int cursorBackColor) {
         this.foreColor = foreColor;
         this.backColor = backColor;
         this.cursorForeColor = cursorForeColor;
@@ -96,7 +96,7 @@ public class ColorScheme {
      * @param scheme An integer array <code>{ foreColor, backColor,
      *               optionalCursorForeColor, optionalCursorBackColor }</code>.
      */
-    public ColorScheme(int[] scheme) {
+    public ColorScheme(final int[] scheme) {
         int schemeLength = scheme.length;
         if (schemeLength != 2 && schemeLength != 4) {
             throw new IllegalArgumentException();

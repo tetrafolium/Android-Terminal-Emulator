@@ -29,11 +29,11 @@ public class TermExec {
     private final List<String> command;
     private final Map<String, String> environment;
 
-    public TermExec(@NonNull String... command) {
+    public TermExec(final @NonNull String... command) {
         this(new ArrayList<>(Arrays.asList(command)));
     }
 
-    public TermExec(@NonNull List<String> command) {
+    public TermExec(final @NonNull List<String> command) {
         this.command = command;
         this.environment = new Hashtable<>(System.getenv());
     }
@@ -46,11 +46,11 @@ public class TermExec {
         return environment;
     }
 
-    public @NonNull TermExec command(@NonNull String... command) {
+    public @NonNull TermExec command(final @NonNull String... command) {
         return command(new ArrayList<>(Arrays.asList(command)));
     }
 
-    public @NonNull TermExec command(List<String> command) {
+    public @NonNull TermExec command(final List<String> command) {
         command.clear();
         command.addAll(command);
         return this;
@@ -66,7 +66,7 @@ public class TermExec {
      *
      * @return the PID of the started process.
      */
-    public int start(@NonNull ParcelFileDescriptor ptmxFd) throws IOException {
+    public int start(final @NonNull ParcelFileDescriptor ptmxFd) throws IOException {
         if (Looper.getMainLooper() == Looper.myLooper())
             throw new IllegalStateException("This method must not be called from the main thread!");
 
@@ -98,7 +98,7 @@ public class TermExec {
      */
     public static native void sendSignal(int processId, int signal);
 
-    static int createSubprocess(ParcelFileDescriptor masterFd, String cmd, String[] args, String[] envVars) throws IOException
+    static int createSubprocess(final ParcelFileDescriptor masterFd, final String cmd, final String[] args, final String[] envVars) throws IOException
     {
         final int integerFd;
 
@@ -126,7 +126,7 @@ public class TermExec {
 // prevents runtime errors on old API versions with ruthless verifier
 @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
 class FdHelperHoneycomb {
-    static int getFd(ParcelFileDescriptor descriptor) {
+    static int getFd(final ParcelFileDescriptor descriptor) {
         return descriptor.getFd();
     }
 }

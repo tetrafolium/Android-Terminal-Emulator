@@ -97,7 +97,7 @@ public final class ShortcutEncryption {
         private final SecretKey encKey;
         private final SecretKey macKey;
 
-        public Keys(SecretKey encKey, SecretKey macKey) {
+        public Keys(final SecretKey encKey, final SecretKey macKey) {
             this.encKey = encKey;
             this.macKey = macKey;
         }
@@ -126,7 +126,7 @@ public final class ShortcutEncryption {
          * Creates a new Keys object by decoding a string of the form output
          * from encode().
          */
-        public static Keys decode(String encodedKeys) {
+        public static Keys decode(final String encodedKeys) {
             String[] keys = COLON.split(encodedKeys);
             if (keys.length != 2) {
                 throw new IllegalArgumentException("Invalid encoded keys!");
@@ -141,7 +141,7 @@ public final class ShortcutEncryption {
     /**
      * Retrieves the shortcut encryption keys from preferences.
      */
-    public static Keys getKeys(Context ctx) {
+    public static Keys getKeys(final Context ctx) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         String keyEnc = prefs.getString(SHORTCUT_KEYS_PREF, null);
         if (keyEnc == null) {
@@ -158,7 +158,7 @@ public final class ShortcutEncryption {
     /**
      * Saves shortcut encryption keys to preferences.
      */
-    public static void saveKeys(Context ctx, Keys keys) {
+    public static void saveKeys(final Context ctx, final Keys keys) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
 
         SharedPreferences.Editor edit = prefs.edit();
@@ -196,7 +196,7 @@ public final class ShortcutEncryption {
      *
      * @throws GeneralSecurityException if the data is invalid, verification fails, or an error occurs during decryption.
      */
-    public static String decrypt(String encrypted, Keys keys) throws GeneralSecurityException {
+    public static String decrypt(final String encrypted, final Keys keys) throws GeneralSecurityException {
         Cipher cipher = Cipher.getInstance(ENC_SYSTEM);
         String[] data = COLON.split(encrypted);
         if (data.length != 3) {
@@ -251,7 +251,7 @@ public final class ShortcutEncryption {
      *
      * @throws GeneralSecurityException if an error occurs during encryption.
      */
-    public static String encrypt(String data, Keys keys) throws GeneralSecurityException {
+    public static String encrypt(final String data, final Keys keys) throws GeneralSecurityException {
         Cipher cipher = Cipher.getInstance(ENC_SYSTEM);
 
         // Generate a random IV
@@ -278,7 +278,7 @@ public final class ShortcutEncryption {
      *
      * @throws GeneralSecurityException if an error occurs during MAC computation.
      */
-    private static String computeMac(String data, SecretKey key) throws GeneralSecurityException {
+    private static String computeMac(final String data, final SecretKey key) throws GeneralSecurityException {
         Mac mac = Mac.getInstance(MAC_ALGORITHM);
         mac.init(key);
         byte[] macBytes = mac.doFinal(data.getBytes());
@@ -291,7 +291,7 @@ public final class ShortcutEncryption {
      *
      * @return A String with the Base64-encoded data.
      */
-    private static String encodeToBase64(byte[] data) {
+    private static String encodeToBase64(final byte[] data) {
         return Base64.encodeToString(data, BASE64_EFLAGS);
     }
 
@@ -302,7 +302,7 @@ public final class ShortcutEncryption {
      * @param data A String with the Base64-encoded data.
      * @return A newly-allocated byte[] array with the decoded data.
      */
-    private static byte[] decodeBase64(String data) {
+    private static byte[] decodeBase64(final String data) {
         return Base64.decode(data, BASE64_DFLAGS);
     }
 

@@ -26,11 +26,11 @@ import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.util.TermSettings;
 
 public class TermView extends EmulatorView {
-    public TermView(Context context, TermSession session, DisplayMetrics metrics) {
+    public TermView(final Context context, final TermSession session, final DisplayMetrics metrics) {
         super(context, session, metrics);
     }
 
-    public void updatePrefs(TermSettings settings, ColorScheme scheme) {
+    public void updatePrefs(final TermSettings settings, final ColorScheme scheme) {
         if (scheme == null) {
             scheme = new ColorScheme(settings.getColorScheme());
         }
@@ -46,7 +46,7 @@ public class TermView extends EmulatorView {
         setMouseTracking(settings.getMouseTrackingFlag());
     }
 
-    public void updatePrefs(TermSettings settings) {
+    public void updatePrefs(final TermSettings settings) {
         updatePrefs(settings, null);
     }
 

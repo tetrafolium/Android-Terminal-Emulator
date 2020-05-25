@@ -8,7 +8,7 @@ public class ClipboardManagerCompatFactory {
         /* singleton */
     }
 
-    public static ClipboardManagerCompat getManager(Context context) {
+    public static ClipboardManagerCompat getManager(final Context context) {
         if (AndroidCompat.SDK < 11) {
             return new ClipboardManagerCompatV1(context);
         } else {

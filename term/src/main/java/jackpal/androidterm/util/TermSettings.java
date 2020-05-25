@@ -152,12 +152,12 @@ public class TermSettings {
     public static final int BACK_KEY_SENDS_TAB = 4;
     private static final int BACK_KEY_MAX = 4;
 
-    public TermSettings(Resources res, SharedPreferences prefs) {
+    public TermSettings(final Resources res, final SharedPreferences prefs) {
         readDefaultPrefs(res);
         readPrefs(prefs);
     }
 
-    private void readDefaultPrefs(Resources res) {
+    private void readDefaultPrefs(final Resources res) {
         mStatusBar = Integer.parseInt(res.getString(R.string.pref_statusbar_default));
         mActionBarMode = res.getInteger(R.integer.pref_actionbar_default);
         mOrientation = res.getInteger(R.integer.pref_orientation_default);
@@ -184,7 +184,7 @@ public class TermSettings {
         mUseKeyboardShortcuts = res.getBoolean(R.bool.pref_use_keyboard_shortcuts_default);
     }
 
-    public void readPrefs(SharedPreferences prefs) {
+    public void readPrefs(final SharedPreferences prefs) {
         mPrefs = prefs;
         mStatusBar = readIntPref(STATUSBAR_KEY, mStatusBar, 1);
         mActionBarMode = readIntPref(ACTIONBAR_KEY, mActionBarMode, ACTION_BAR_MODE_MAX);
@@ -215,7 +215,7 @@ public class TermSettings {
         mPrefs = null;  // we leak a Context if we hold on to this
     }
 
-    private int readIntPref(String key, int defaultValue, int maxValue) {
+    private int readIntPref(final String key, final int defaultValue, final int maxValue) {
         int val;
         try {
             val = Integer.parseInt(
@@ -227,11 +227,11 @@ public class TermSettings {
         return val;
     }
 
-    private String readStringPref(String key, String defaultValue) {
+    private String readStringPref(final String key, final String defaultValue) {
         return mPrefs.getString(key, defaultValue);
     }
 
-    private boolean readBooleanPref(String key, boolean defaultValue) {
+    private boolean readBooleanPref(final String key, final boolean defaultValue) {
         return mPrefs.getBoolean(key, defaultValue);
     }
 
@@ -347,7 +347,7 @@ public class TermSettings {
         return mAllowPathPrepend;
     }
 
-    public void setPrependPath(String prependPath) {
+    public void setPrependPath(final String prependPath) {
         mPrependPath = prependPath;
     }
 
@@ -355,7 +355,7 @@ public class TermSettings {
         return mPrependPath;
     }
 
-    public void setAppendPath(String appendPath) {
+    public void setAppendPath(final String appendPath) {
         mAppendPath = appendPath;
     }
 
@@ -363,7 +363,7 @@ public class TermSettings {
         return mAppendPath;
     }
 
-    public void setHomePath(String homePath) {
+    public void setHomePath(final String homePath) {
         mHomePath = homePath;
     }
 

@@ -36,7 +36,7 @@ public class PathReceiver extends BroadcastReceiver {
      * received.
      */
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, final Intent intent) {
         /* Unpack our sample bin/ and sbin/ if not already done */
         File binDir = setupBinDir(context);
         File sbinDir = setupSbinDir(context);
@@ -83,7 +83,7 @@ public class PathReceiver extends BroadcastReceiver {
         }
     }
 
-    private File setupBinDir(Context context) {
+    private File setupBinDir(final Context context) {
         String dataDir = getDataDir(context);
         File binDir = new File(dataDir, "bin");
         if (!binDir.exists()) {
@@ -108,7 +108,7 @@ public class PathReceiver extends BroadcastReceiver {
         return binDir;
     }
 
-    private File setupSbinDir(Context context) {
+    private File setupSbinDir(final Context context) {
         String dataDir = getDataDir(context);
         File sbinDir = new File(dataDir, "sbin");
         if (!sbinDir.exists()) {
@@ -133,7 +133,7 @@ public class PathReceiver extends BroadcastReceiver {
         return sbinDir;
     }
 
-    private String getDataDir(Context context) {
+    private String getDataDir(final Context context) {
         /* On API 4 and later, you can just do this */
         // return context.getApplicationInfo().dataDir;
 
@@ -148,7 +148,7 @@ public class PathReceiver extends BroadcastReceiver {
         return dataDir;
     }
 
-    private void copyStream(OutputStream dst, InputStream src) throws IOException {
+    private void copyStream(final OutputStream dst, final InputStream src) throws IOException {
         byte[] buffer = new byte[4096];
         int bytesRead = 0;
         while ((bytesRead = src.read(buffer)) >= 0) {
@@ -157,7 +157,7 @@ public class PathReceiver extends BroadcastReceiver {
         dst.close();
     }
 
-    private void chmod(String... args) throws IOException {
+    private void chmod(final String... args) throws IOException {
         String[] cmdline = new String[args.length + 1];
         cmdline[0] = "/system/bin/chmod";
         System.arraycopy(args, 0, cmdline, 1, args.length);

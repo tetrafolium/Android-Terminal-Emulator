@@ -123,7 +123,7 @@ public class Base64 {
      * @throws IllegalArgumentException if the input contains
      * incorrect padding
      */
-    public static byte[] decode(String str, int flags) {
+    public static byte[] decode(final String str, final int flags) {
         return decode(str.getBytes(), flags);
     }
 
@@ -141,7 +141,7 @@ public class Base64 {
      * @throws IllegalArgumentException if the input contains
      * incorrect padding
      */
-    public static byte[] decode(byte[] input, int flags) {
+    public static byte[] decode(final byte[] input, final int flags) {
         return decode(input, 0, input.length, flags);
     }
 
@@ -161,10 +161,10 @@ public class Base64 {
      * @throws IllegalArgumentException if the input contains
      * incorrect padding
      */
-    public static byte[] decode(byte[] input, int offset, int len, int flags) {
+    public static byte[] decode(final byte[] input, final int offset, final int len, final int flags) {
         // Allocate space for the most data the input could represent.
         // (It could contain less if it contains whitespace, etc.)
-        Decoder decoder = new Decoder(flags, new byte[len*3/4]);
+        Decoder decoder = new Decoder(flags, new byte[len * 3 / 4]);
 
         if (!decoder.process(input, offset, len, true)) {
             throw new IllegalArgumentException("bad base-64");
@@ -247,7 +247,7 @@ public class Base64 {
 
         final private int[] alphabet;
 
-        public Decoder(int flags, byte[] output) {
+        public Decoder(final int flags, final byte[] output) {
             this.output = output;
 
             alphabet = ((flags & URL_SAFE) == 0) ? DECODE : DECODE_WEBSAFE;
@@ -259,8 +259,8 @@ public class Base64 {
          * @return an overestimate for the number of bytes {@code
          * len} bytes could decode to.
          */
-        public int maxOutputSize(int len) {
-            return len * 3/4 + 10;
+        public int maxOutputSize(final int len) {
+            return len * 3 / 4 + 10;
         }
 
         /**
@@ -269,7 +269,7 @@ public class Base64 {
          * @return true if the state machine is still healthy.  false if
          *         bad base-64 data has been detected in the input stream.
          */
-        public boolean process(byte[] input, int offset, int len, boolean finish) {
+        public boolean process(final byte[] input, final int offset, final int len, final boolean finish) {
             if (this.state == 6) return false;
 
             int p = offset;
@@ -302,13 +302,13 @@ public class Base64 {
                 // You can remove this whole block and the output should
                 // be the same, just slower.
                 if (state == 0) {
-                    while (p+4 <= len &&
-                           (value = ((alphabet[input[p] & 0xff] << 18) |
-                                     (alphabet[input[p+1] & 0xff] << 12) |
-                                     (alphabet[input[p+2] & 0xff] << 6) |
-                                     (alphabet[input[p+3] & 0xff]))) >= 0) {
-                        output[op+2] = (byte) value;
-                        output[op+1] = (byte) (value >> 8);
+                    while (p + 4 <= len
+                           && (value = ((alphabet[input[p] & 0xff] << 18)
+                                     | (alphabet[input[p + 1] & 0xff] << 12)
+                                     | (alphabet[input[p + 2] & 0xff] << 6)
+                                     | (alphabet[input[p + 3] & 0xff]))) >= 0) {
+                        output[op + 2] = (byte) value;
+                        output[op + 1] = (byte) (value >> 8);
                         output[op] = (byte) (value >> 16);
                         op += 3;
                         p += 4;
@@ -363,15 +363,15 @@ public class Base64 {
                     if (d >= 0) {
                         // Emit the output triple and return to state 0.
                         value = (value << 6) | d;
-                        output[op+2] = (byte) value;
-                        output[op+1] = (byte) (value >> 8);
+                        output[op + 2] = (byte) value;
+                        output[op + 1] = (byte) (value >> 8);
                         output[op] = (byte) (value >> 16);
                         op += 3;
                         state = 0;
                     } else if (d == EQUALS) {
                         // Emit the last (partial) output tuple;
                         // expect no further data or padding characters.
-                        output[op+1] = (byte) (value >> 2);
+                        output[op + 1] = (byte) (value >> 2);
                         output[op] = (byte) (value >> 10);
                         op += 2;
                         state = 5;
@@ -460,7 +460,7 @@ public class Base64 {
      *               Passing {@code DEFAULT} results in output that
      *               adheres to RFC 2045.
      */
-    public static String encodeToString(byte[] input, int flags) {
+    public static String encodeToString(final byte[] input, final int flags) {
         try {
             return new String(encode(input, flags), "US-ASCII");
         } catch (UnsupportedEncodingException e) {
@@ -481,7 +481,7 @@ public class Base64 {
      *               Passing {@code DEFAULT} results in output that
      *               adheres to RFC 2045.
      */
-    public static String encodeToString(byte[] input, int offset, int len, int flags) {
+    public static String encodeToString(final byte[] input, final int offset, final int len, final int flags) {
         try {
             return new String(encode(input, offset, len, flags), "US-ASCII");
         } catch (UnsupportedEncodingException e) {
@@ -499,7 +499,7 @@ public class Base64 {
      *               Passing {@code DEFAULT} results in output that
      *               adheres to RFC 2045.
      */
-    public static byte[] encode(byte[] input, int flags) {
+    public static byte[] encode(final byte[] input, final int flags) {
         return encode(input, 0, input.length, flags);
     }
 
@@ -515,7 +515,7 @@ public class Base64 {
      *               Passing {@code DEFAULT} results in output that
      *               adheres to RFC 2045.
      */
-    public static byte[] encode(byte[] input, int offset, int len, int flags) {
+    public static byte[] encode(final byte[] input, final int offset, final int len, final int flags) {
         Encoder encoder = new Encoder(flags, null);
 
         // Compute the exact length of the array we will produce.
@@ -536,8 +536,8 @@ public class Base64 {
 
         // Account for the newlines, if any.
         if (encoder.do_newline && len > 0) {
-            output_len += (((len-1) / (3 * Encoder.LINE_GROUPS)) + 1) *
-                (encoder.do_cr ? 2 : 1);
+            output_len += (((len - 1) / (3 * Encoder.LINE_GROUPS)) + 1)
+                * (encoder.do_cr ? 2 : 1);
         }
 
         encoder.output = new byte[output_len];
@@ -587,7 +587,7 @@ public class Base64 {
         final public boolean do_cr;
         final private byte[] alphabet;
 
-        public Encoder(int flags, byte[] output) {
+        public Encoder(final int flags, final byte[] output) {
             this.output = output;
 
             do_padding = (flags & NO_PADDING) == 0;
@@ -605,11 +605,11 @@ public class Base64 {
          * @return an overestimate for the number of bytes {@code
          * len} bytes could encode to.
          */
-        public int maxOutputSize(int len) {
-            return len * 8/5 + 10;
+        public int maxOutputSize(final int len) {
+            return len * 8 / 5 + 10;
         }
 
-        public boolean process(byte[] input, int offset, int len, boolean finish) {
+        public boolean process(final byte[] input, final int offset, final int len, final boolean finish) {
             // Using local variables makes the encoder about 9% faster.
             final byte[] alphabet = this.alphabet;
             final byte[] output = this.output;
@@ -630,22 +630,23 @@ public class Base64 {
                     break;
 
                 case 1:
-                    if (p+2 <= len) {
+                    if (p + 2 <= len) {
                         // A 1-byte tail with at least 2 bytes of
                         // input available now.
-                        v = ((tail[0] & 0xff) << 16) |
-                            ((input[p++] & 0xff) << 8) |
-                            (input[p++] & 0xff);
+                        v = ((tail[0] & 0xff) << 16)
+                            | ((input[p++] & 0xff) << 8)
+                            | (input[p++] & 0xff);
                         tailLen = 0;
-                    };
+                    }
+                    ;
                     break;
 
                 case 2:
-                    if (p+1 <= len) {
+                    if (p + 1 <= len) {
                         // A 2-byte tail with at least 1 byte of input.
-                        v = ((tail[0] & 0xff) << 16) |
-                            ((tail[1] & 0xff) << 8) |
-                            (input[p++] & 0xff);
+                        v = ((tail[0] & 0xff) << 16)
+                            | ((tail[1] & 0xff) << 8)
+                            | (input[p++] & 0xff);
                         tailLen = 0;
                     }
                     break;
@@ -668,14 +669,14 @@ public class Base64 {
 
             // The main loop, turning 3 input bytes into 4 output bytes on
             // each iteration.
-            while (p+3 <= len) {
-                v = ((input[p] & 0xff) << 16) |
-                    ((input[p+1] & 0xff) << 8) |
-                    (input[p+2] & 0xff);
+            while (p + 3 <= len) {
+                v = ((input[p] & 0xff) << 16)
+                    | ((input[p + 1] & 0xff) << 8)
+                    | (input[p + 2] & 0xff);
                 output[op] = alphabet[(v >> 18) & 0x3f];
-                output[op+1] = alphabet[(v >> 12) & 0x3f];
-                output[op+2] = alphabet[(v >> 6) & 0x3f];
-                output[op+3] = alphabet[v & 0x3f];
+                output[op + 1] = alphabet[(v >> 12) & 0x3f];
+                output[op + 2] = alphabet[(v >> 6) & 0x3f];
+                output[op + 3] = alphabet[v & 0x3f];
                 p += 3;
                 op += 4;
                 if (--count == 0) {
@@ -691,7 +692,7 @@ public class Base64 {
                 // remaining in input; there should be at most two bytes
                 // total.
 
-                if (p-tailLen == len-1) {
+                if (p - tailLen == len - 1) {
                     int t = 0;
                     v = ((tailLen > 0 ? tail[t++] : input[p++]) & 0xff) << 4;
                     tailLen -= t;
@@ -705,10 +706,10 @@ public class Base64 {
                         if (do_cr) output[op++] = '\r';
                         output[op++] = '\n';
                     }
-                } else if (p-tailLen == len-2) {
+                } else if (p - tailLen == len - 2) {
                     int t = 0;
-                    v = (((tailLen > 1 ? tail[t++] : input[p++]) & 0xff) << 10) |
-                        (((tailLen > 0 ? tail[t++] : input[p++]) & 0xff) << 2);
+                    v = (((tailLen > 1 ? tail[t++] : input[p++]) & 0xff) << 10)
+                        | (((tailLen > 0 ? tail[t++] : input[p++]) & 0xff) << 2);
                     tailLen -= t;
                     output[op++] = alphabet[(v >> 12) & 0x3f];
                     output[op++] = alphabet[(v >> 6) & 0x3f];
@@ -731,11 +732,11 @@ public class Base64 {
                 // Save the leftovers in tail to be consumed on the next
                 // call to encodeInternal.
 
-                if (p == len-1) {
+                if (p == len - 1) {
                     tail[tailLen++] = input[p];
-                } else if (p == len-2) {
+                } else if (p == len - 2) {
                     tail[tailLen++] = input[p];
-                    tail[tailLen++] = input[p+1];
+                    tail[tailLen++] = input[p + 1];
                 }
             }
 

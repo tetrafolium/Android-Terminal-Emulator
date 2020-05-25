@@ -14,12 +14,12 @@ public class AndroidCharacterCompat {
     public static final int EAST_ASIAN_WIDTH_WIDE = 5;
 
     private static class Api8OrLater {
-        public static int getEastAsianWidth(char c) {
+        public static int getEastAsianWidth(final char c) {
             return AndroidCharacter.getEastAsianWidth(c);
         }
     }
 
-    public static int getEastAsianWidth(char c) {
+    public static int getEastAsianWidth(final char c) {
         if (AndroidCompat.SDK >= 8) {
             return Api8OrLater.getEastAsianWidth(c);
         } else {
