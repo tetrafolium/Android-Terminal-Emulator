@@ -21,36 +21,36 @@ import java.io.OutputStream;
  * either a local shell or a Telnet server.
  */
 public class LaunchActivity extends Activity {
-  private static final String TAG = "TelnetLaunchActivity";
+private static final String TAG = "TelnetLaunchActivity";
 
-  /** Called when the activity is first created. */
-  @Override
-  public void onCreate(final Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.launch_activity);
-    final Context context = this;
-    addClickListener(R.id.launchLocal, new OnClickListener() {
-      public void onClick(final View v) {
-        Intent intent = new Intent(context, TermActivity.class);
-        intent.putExtra("type", "local");
-        startActivity(intent);
-      }
-    });
+/** Called when the activity is first created. */
+@Override
+public void onCreate(final Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.launch_activity);
+	final Context context = this;
+	addClickListener(R.id.launchLocal, new OnClickListener() {
+			public void onClick(final View v) {
+			        Intent intent = new Intent(context, TermActivity.class);
+			        intent.putExtra("type", "local");
+			        startActivity(intent);
+			}
+		});
 
-    final EditText hostEdit = (EditText)findViewById(R.id.hostname);
-    addClickListener(R.id.launchTelnet, new OnClickListener() {
-      public void onClick(final View v) {
-        Intent intent = new Intent(context, TermActivity.class);
-        intent.putExtra("type", "telnet");
-        String hostname = hostEdit.getText().toString();
-        intent.putExtra("host", hostname);
-        startActivity(intent);
-      }
-    });
-  }
+	final EditText hostEdit = (EditText)findViewById(R.id.hostname);
+	addClickListener(R.id.launchTelnet, new OnClickListener() {
+			public void onClick(final View v) {
+			        Intent intent = new Intent(context, TermActivity.class);
+			        intent.putExtra("type", "telnet");
+			        String hostname = hostEdit.getText().toString();
+			        intent.putExtra("host", hostname);
+			        startActivity(intent);
+			}
+		});
+}
 
-  private void addClickListener(final int buttonId,
-                                final OnClickListener onClickListener) {
-    ((Button)findViewById(buttonId)).setOnClickListener(onClickListener);
-  }
+private void addClickListener(final int buttonId,
+                              final OnClickListener onClickListener) {
+	((Button)findViewById(buttonId)).setOnClickListener(onClickListener);
+}
 }

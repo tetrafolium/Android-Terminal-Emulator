@@ -22,26 +22,26 @@ import android.app.Activity;
  * Compatibility class for android.app.Activity
  */
 public class ActivityCompat {
-  private static class Api11OrLater {
-    public static void invalidateOptionsMenu(final Activity activity) {
-      activity.invalidateOptionsMenu();
-    }
+private static class Api11OrLater {
+public static void invalidateOptionsMenu(final Activity activity) {
+	activity.invalidateOptionsMenu();
+}
 
-    public static Object getActionBar(final Activity activity) {
-      return activity.getActionBar();
-    }
-  }
+public static Object getActionBar(final Activity activity) {
+	return activity.getActionBar();
+}
+}
 
-  public static void invalidateOptionsMenu(final Activity activity) {
-    if (AndroidCompat.SDK >= 11) {
-      Api11OrLater.invalidateOptionsMenu(activity);
-    }
-  }
+public static void invalidateOptionsMenu(final Activity activity) {
+	if (AndroidCompat.SDK >= 11) {
+		Api11OrLater.invalidateOptionsMenu(activity);
+	}
+}
 
-  public static ActionBarCompat getActionBar(final Activity activity) {
-    if (AndroidCompat.SDK < 11) {
-      return null;
-    }
-    return ActionBarCompat.wrap(Api11OrLater.getActionBar(activity));
-  }
+public static ActionBarCompat getActionBar(final Activity activity) {
+	if (AndroidCompat.SDK < 11) {
+		return null;
+	}
+	return ActionBarCompat.wrap(Api11OrLater.getActionBar(activity));
+}
 }

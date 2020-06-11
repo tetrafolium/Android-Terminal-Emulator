@@ -24,34 +24,34 @@ import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.util.TermSettings;
 
 public class TermView extends EmulatorView {
-  public TermView(final Context context, final TermSession session,
-                  final DisplayMetrics metrics) {
-    super(context, session, metrics);
-  }
+public TermView(final Context context, final TermSession session,
+                final DisplayMetrics metrics) {
+	super(context, session, metrics);
+}
 
-  public void updatePrefs(final TermSettings settings,
-                          final ColorScheme scheme) {
-    if (scheme == null) {
-      scheme = new ColorScheme(settings.getColorScheme());
-    }
+public void updatePrefs(final TermSettings settings,
+                        final ColorScheme scheme) {
+	if (scheme == null) {
+		scheme = new ColorScheme(settings.getColorScheme());
+	}
 
-    setTextSize(settings.getFontSize());
-    setUseCookedIME(settings.useCookedIME());
-    setColorScheme(scheme);
-    setBackKeyCharacter(settings.getBackKeyCharacter());
-    setAltSendsEsc(settings.getAltSendsEscFlag());
-    setControlKeyCode(settings.getControlKeyCode());
-    setFnKeyCode(settings.getFnKeyCode());
-    setTermType(settings.getTermType());
-    setMouseTracking(settings.getMouseTrackingFlag());
-  }
+	setTextSize(settings.getFontSize());
+	setUseCookedIME(settings.useCookedIME());
+	setColorScheme(scheme);
+	setBackKeyCharacter(settings.getBackKeyCharacter());
+	setAltSendsEsc(settings.getAltSendsEscFlag());
+	setControlKeyCode(settings.getControlKeyCode());
+	setFnKeyCode(settings.getFnKeyCode());
+	setTermType(settings.getTermType());
+	setMouseTracking(settings.getMouseTrackingFlag());
+}
 
-  public void updatePrefs(final TermSettings settings) {
-    updatePrefs(settings, null);
-  }
+public void updatePrefs(final TermSettings settings) {
+	updatePrefs(settings, null);
+}
 
-  @Override
-  public String toString() {
-    return getClass().toString() + '(' + getTermSession() + ')';
-  }
+@Override
+public String toString() {
+	return getClass().toString() + '(' + getTermSession() + ')';
+}
 }

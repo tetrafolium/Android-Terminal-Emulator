@@ -30,137 +30,137 @@ import java.io.OutputStream;
 import java.lang.ProcessBuilder;
 
 public class PathReceiver extends BroadcastReceiver {
-  /**
-   * Called when a broadcast matching the declared intent filters is
-   * received.
-   */
-  @Override
-  public void onReceive(final Context context, final Intent intent) {
-    /* Unpack our sample bin/ and sbin/ if not already done */
-    File binDir = setupBinDir(context);
-    File sbinDir = setupSbinDir(context);
+/**
+ * Called when a broadcast matching the declared intent filters is
+ * received.
+ */
+@Override
+public void onReceive(final Context context, final Intent intent) {
+	/* Unpack our sample bin/ and sbin/ if not already done */
+	File binDir = setupBinDir(context);
+	File sbinDir = setupSbinDir(context);
 
-    String packageName = context.getPackageName();
+	String packageName = context.getPackageName();
 
-    String action = intent.getAction();
+	String action = intent.getAction();
 
-    /**
-     * You need to declare the permission
-     * jackpal.androidterm.permission.APPEND_TO_PATH
-     * to receive this broadcast.
-     */
-    if (action.equals("jackpal.androidterm.broadcast.APPEND_TO_PATH")) {
-      /* The directory we want appended goes into the result extras */
-      Bundle result = getResultExtras(true);
+	/**
+	 * You need to declare the permission
+	 * jackpal.androidterm.permission.APPEND_TO_PATH
+	 * to receive this broadcast.
+	 */
+	if (action.equals("jackpal.androidterm.broadcast.APPEND_TO_PATH")) {
+		/* The directory we want appended goes into the result extras */
+		Bundle result = getResultExtras(true);
 
-      /**
-       * By convention, entries are indexed by package name.
-       *
-       * If you need to impose an ordering constraint for some reason,
-       * you may prepend a number to your package name -- for example,
-       * 50-com.example.awesomebin or 00-net.busybox.android.
-       */
-      result.putString(packageName, binDir.getAbsolutePath());
+		/**
+		 * By convention, entries are indexed by package name.
+		 *
+		 * If you need to impose an ordering constraint for some reason,
+		 * you may prepend a number to your package name -- for example,
+		 * 50-com.example.awesomebin or 00-net.busybox.android.
+		 */
+		result.putString(packageName, binDir.getAbsolutePath());
 
-      setResultCode(Activity.RESULT_OK);
-    }
+		setResultCode(Activity.RESULT_OK);
+	}
 
-    /**
-     * You need to declare the permission
-     * jackpal.androidterm.permission.PREPEND_TO_PATH
-     * to receive this broadcast.
-     *
-     * This is intended for packages like BusyBox installers which need
-     * to override existing system commands; otherwise, you should listen
-     * for the APPEND_TO_PATH broadcast instead.
-     */
-    if (action.equals("jackpal.androidterm.broadcast.PREPEND_TO_PATH")) {
-      /* The directory we want prepended goes into the result extras */
-      Bundle result = getResultExtras(true);
-      result.putString(packageName, sbinDir.getAbsolutePath());
-      setResultCode(Activity.RESULT_OK);
-    }
-  }
+	/**
+	 * You need to declare the permission
+	 * jackpal.androidterm.permission.PREPEND_TO_PATH
+	 * to receive this broadcast.
+	 *
+	 * This is intended for packages like BusyBox installers which need
+	 * to override existing system commands; otherwise, you should listen
+	 * for the APPEND_TO_PATH broadcast instead.
+	 */
+	if (action.equals("jackpal.androidterm.broadcast.PREPEND_TO_PATH")) {
+		/* The directory we want prepended goes into the result extras */
+		Bundle result = getResultExtras(true);
+		result.putString(packageName, sbinDir.getAbsolutePath());
+		setResultCode(Activity.RESULT_OK);
+	}
+}
 
-  private File setupBinDir(final Context context) {
-    String dataDir = getDataDir(context);
-    File binDir = new File(dataDir, "bin");
-    if (!binDir.exists()) {
-      try {
-        binDir.mkdir();
-        chmod("755", binDir.getAbsolutePath());
-      } catch (Exception e) {
-      }
-    }
+private File setupBinDir(final Context context) {
+	String dataDir = getDataDir(context);
+	File binDir = new File(dataDir, "bin");
+	if (!binDir.exists()) {
+		try {
+			binDir.mkdir();
+			chmod("755", binDir.getAbsolutePath());
+		} catch (Exception e) {
+		}
+	}
 
-    File hello = new File(binDir, "hello");
-    if (!hello.exists()) {
-      try {
-        InputStream src = context.getAssets().open("hello");
-        FileOutputStream dst = new FileOutputStream(hello);
-        copyStream(dst, src);
-        chmod("755", hello.getAbsolutePath());
-      } catch (Exception e) {
-      }
-    }
+	File hello = new File(binDir, "hello");
+	if (!hello.exists()) {
+		try {
+			InputStream src = context.getAssets().open("hello");
+			FileOutputStream dst = new FileOutputStream(hello);
+			copyStream(dst, src);
+			chmod("755", hello.getAbsolutePath());
+		} catch (Exception e) {
+		}
+	}
 
-    return binDir;
-  }
+	return binDir;
+}
 
-  private File setupSbinDir(final Context context) {
-    String dataDir = getDataDir(context);
-    File sbinDir = new File(dataDir, "sbin");
-    if (!sbinDir.exists()) {
-      try {
-        sbinDir.mkdir();
-        chmod("755", sbinDir.getAbsolutePath());
-      } catch (Exception e) {
-      }
-    }
+private File setupSbinDir(final Context context) {
+	String dataDir = getDataDir(context);
+	File sbinDir = new File(dataDir, "sbin");
+	if (!sbinDir.exists()) {
+		try {
+			sbinDir.mkdir();
+			chmod("755", sbinDir.getAbsolutePath());
+		} catch (Exception e) {
+		}
+	}
 
-    File ls = new File(sbinDir, "ls");
-    if (!ls.exists()) {
-      try {
-        InputStream src = context.getAssets().open("ls");
-        FileOutputStream dst = new FileOutputStream(ls);
-        copyStream(dst, src);
-        chmod("755", ls.getAbsolutePath());
-      } catch (Exception e) {
-      }
-    }
+	File ls = new File(sbinDir, "ls");
+	if (!ls.exists()) {
+		try {
+			InputStream src = context.getAssets().open("ls");
+			FileOutputStream dst = new FileOutputStream(ls);
+			copyStream(dst, src);
+			chmod("755", ls.getAbsolutePath());
+		} catch (Exception e) {
+		}
+	}
 
-    return sbinDir;
-  }
+	return sbinDir;
+}
 
-  private String getDataDir(final Context context) {
-    /* On API 4 and later, you can just do this */
-    // return context.getApplicationInfo().dataDir;
+private String getDataDir(final Context context) {
+	/* On API 4 and later, you can just do this */
+	// return context.getApplicationInfo().dataDir;
 
-    String packageName = context.getPackageName();
-    PackageManager pm = context.getPackageManager();
-    String dataDir = null;
-    try {
-      dataDir = pm.getApplicationInfo(packageName, 0).dataDir;
-    } catch (Exception e) {
-      // Won't happen -- we know we're installed
-    }
-    return dataDir;
-  }
+	String packageName = context.getPackageName();
+	PackageManager pm = context.getPackageManager();
+	String dataDir = null;
+	try {
+		dataDir = pm.getApplicationInfo(packageName, 0).dataDir;
+	} catch (Exception e) {
+		// Won't happen -- we know we're installed
+	}
+	return dataDir;
+}
 
-  private void copyStream(final OutputStream dst, final InputStream src)
-      throws IOException {
-    byte[] buffer = new byte[4096];
-    int bytesRead = 0;
-    while ((bytesRead = src.read(buffer)) >= 0) {
-      dst.write(buffer, 0, bytesRead);
-    }
-    dst.close();
-  }
+private void copyStream(final OutputStream dst, final InputStream src)
+throws IOException {
+	byte[] buffer = new byte[4096];
+	int bytesRead = 0;
+	while ((bytesRead = src.read(buffer)) >= 0) {
+		dst.write(buffer, 0, bytesRead);
+	}
+	dst.close();
+}
 
-  private void chmod(final String... args) throws IOException {
-    String[] cmdline = new String[args.length + 1];
-    cmdline[0] = "/system/bin/chmod";
-    System.arraycopy(args, 0, cmdline, 1, args.length);
-    new ProcessBuilder(cmdline).start();
-  }
+private void chmod(final String... args) throws IOException {
+	String[] cmdline = new String[args.length + 1];
+	cmdline[0] = "/system/bin/chmod";
+	System.arraycopy(args, 0, cmdline, 1, args.length);
+	new ProcessBuilder(cmdline).start();
+}
 }
