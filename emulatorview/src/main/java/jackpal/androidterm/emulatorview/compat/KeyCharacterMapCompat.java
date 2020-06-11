@@ -23,10 +23,8 @@ public abstract class KeyCharacterMapCompat {
     public static final int MODIFIER_BEHAVIOR_CHORDED_OR_TOGGLED = 1;
 
     public static KeyCharacterMapCompat wrap(final Object map) {
-        if (map != null) {
-            if (AndroidCompat.SDK >= 11) {
-                return new KeyCharacterMapApi11OrLater(map);
-            }
+        if ((map != null) && (AndroidCompat.SDK >= 11)) {
+            return new KeyCharacterMapApi11OrLater(map);
         }
         return null;
     }

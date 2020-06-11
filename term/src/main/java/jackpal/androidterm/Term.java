@@ -577,10 +577,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                     restart();
                 } else {
                     win.setFlags(desiredFlag, FULLSCREEN);
-                    if (mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES) {
-                        if (mActionBar != null) {
-                            mActionBar.hide();
-                        }
+                    if ((mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES) && (mActionBar != null)) {
+                        mActionBar.hide();
                     }
                 }
             }

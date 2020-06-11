@@ -40,10 +40,8 @@ public abstract class ActionBarCompat {
     }
 
     public static ActionBarCompat wrap(final Object actionBar) {
-        if (actionBar != null) {
-            if (AndroidCompat.SDK >= 11) {
-                return new ActionBarApi11OrLater(actionBar);
-            }
+        if ((actionBar != null) && (AndroidCompat.SDK >= 11)) {
+            return new ActionBarApi11OrLater(actionBar);
         }
         return null;
     }
