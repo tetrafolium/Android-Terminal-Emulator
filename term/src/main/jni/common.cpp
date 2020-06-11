@@ -31,30 +31,29 @@
  */
 
 #include "common.h"
-#include "termExec.h"
 #include "fileCompat.h"
+#include "termExec.h"
 
 #define LOG_TAG "libjackpal-androidterm"
 
 /*
  * Register several native methods for one class.
  */
-int registerNativeMethods(JNIEnv* env, const char* className,
-                          JNINativeMethod* gMethods, int numMethods)
-{
-    jclass clazz;
+int registerNativeMethods(JNIEnv *env, const char *className,
+                          JNINativeMethod *gMethods, int numMethods) {
+  jclass clazz;
 
-    clazz = env->FindClass(className);
-    if (clazz == NULL) {
-        LOGE("Native registration unable to find class '%s'", className);
-        return JNI_FALSE;
-    }
-    if (env->RegisterNatives(clazz, gMethods, numMethods) < 0) {
-        LOGE("RegisterNatives failed for '%s'", className);
-        return JNI_FALSE;
-    }
+  clazz = env->FindClass(className);
+  if (clazz == NULL) {
+    LOGE("Native registration unable to find class '%s'", className);
+    return JNI_FALSE;
+  }
+  if (env->RegisterNatives(clazz, gMethods, numMethods) < 0) {
+    LOGE("RegisterNatives failed for '%s'", className);
+    return JNI_FALSE;
+  }
 
-    return JNI_TRUE;
+  return JNI_TRUE;
 }
 
 // ----------------------------------------------------------------------------
@@ -64,36 +63,36 @@ int registerNativeMethods(JNIEnv* env, const char* className,
  */
 
 typedef union {
-    JNIEnv* env;
-    void* venv;
+  JNIEnv *env;
+  void *venv;
 } UnionJNIEnvToVoid;
 
-jint JNI_OnLoad(JavaVM* vm, void* reserved) {
-    UnionJNIEnvToVoid uenv;
-    uenv.venv = NULL;
-    jint result = -1;
-    JNIEnv* env = NULL;
+jint JNI_OnLoad(JavaVM *vm, void *reserved) {
+  UnionJNIEnvToVoid uenv;
+  uenv.venv = NULL;
+  jint result = -1;
+  JNIEnv *env = NULL;
 
-    LOGI("JNI_OnLoad");
+  LOGI("JNI_OnLoad");
 
-    if (vm->GetEnv(&uenv.venv, JNI_VERSION_1_4) != JNI_OK) {
-        LOGE("ERROR: GetEnv failed");
-        goto bail;
-    }
-    env = uenv.env;
+  if (vm->GetEnv(&uenv.venv, JNI_VERSION_1_4) != JNI_OK) {
+    LOGE("ERROR: GetEnv failed");
+    goto bail;
+  }
+  env = uenv.env;
 
-    if (init_Exec(env) != JNI_TRUE) {
-        LOGE("ERROR: init of Exec failed");
-        goto bail;
-    }
+  if (init_Exec(env) != JNI_TRUE) {
+    LOGE("ERROR: init of Exec failed");
+    goto bail;
+  }
 
-    if (init_FileCompat(env) != JNI_TRUE) {
-        LOGE("ERROR: init of Exec failed");
-        goto bail;
-    }
+  if (init_FileCompat(env) != JNI_TRUE) {
+    LOGE("ERROR: init of Exec failed");
+    goto bail;
+  }
 
-    result = JNI_VERSION_1_4;
+  result = JNI_VERSION_1_4;
 
 bail:
-    return result;
+  return result;
 }
