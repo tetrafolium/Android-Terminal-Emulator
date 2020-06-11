@@ -15,12 +15,12 @@ public class IntentSampleActivity extends Activity
 
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState)
+    public void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         addClickListener(R.id.openNewWindow, new OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 // Intent for opening a new window without providing script
                 Intent intent =
                         new Intent("jackpal.androidterm.OPEN_NEW_WINDOW");
@@ -31,7 +31,7 @@ public class IntentSampleActivity extends Activity
         final EditText script = (EditText) findViewById(R.id.script);
         script.setText(getString(R.string.default_script));
         addClickListener(R.id.runScript, new OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 /* Intent for opening a new window and running the provided
                    script -- you must declare the permission
                    jackpal.androidterm.permission.RUN_SCRIPT in your manifest
@@ -44,7 +44,7 @@ public class IntentSampleActivity extends Activity
                 startActivity(intent);
             }});
         addClickListener(R.id.runScriptSaveWindow, new OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 /* Intent for running a script in a previously opened window,
                    if it still exists
                    This will open another window if it doesn't find a match */
@@ -66,11 +66,11 @@ public class IntentSampleActivity extends Activity
             }});
     }
 
-    private void addClickListener(int buttonId, OnClickListener onClickListener) {
+    private void addClickListener(final int buttonId, final OnClickListener onClickListener) {
         ((Button) findViewById(buttonId)).setOnClickListener(onClickListener);
     }
 
-    protected void onActivityResult(int request, int result, Intent data) {
+    protected void onActivityResult(final int request, final int result, final Intent data) {
         if (result != RESULT_OK) {
             return;
         }

@@ -21,19 +21,19 @@ final class TextStyle {
 
     final static int kNormalTextStyle = encode(ciForeground, ciBackground, fxNormal);
 
-    static int encode(int foreColor, int backColor, int effect) {
+    static int encode(final int foreColor, final int backColor, final int effect) {
         return ((effect & 0x3f) << 18) | ((foreColor & 0x1ff) << 9) | (backColor & 0x1ff);
     }
 
-    static int decodeForeColor(int encodedColor) {
+    static int decodeForeColor(final int encodedColor) {
         return (encodedColor >> 9) & 0x1ff;
     }
 
-    static int decodeBackColor(int encodedColor) {
+    static int decodeBackColor(final int encodedColor) {
         return encodedColor & 0x1ff;
     }
 
-    static int decodeEffect(int encodedColor) {
+    static int decodeEffect(final int encodedColor) {
         return (encodedColor >> 18) & 0x3f;
     }
 

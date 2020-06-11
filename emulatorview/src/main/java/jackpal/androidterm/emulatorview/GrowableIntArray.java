@@ -1,12 +1,12 @@
 package jackpal.androidterm.emulatorview;
 
 class GrowableIntArray {
-    GrowableIntArray(int initalCapacity) {
+    GrowableIntArray(final int initalCapacity) {
         mData = new int[initalCapacity];
         mLength = 0;
     }
 
-    void append(int i) {
+    void append(final int i) {
         if (mLength + 1 > mData.length) {
             int newLength = Math.max((mData.length * 3) >> 1, 16);
             int[] temp = new int[newLength];
@@ -20,7 +20,7 @@ class GrowableIntArray {
         return mLength;
     }
 
-    int at(int index) {
+    int at(final int index) {
         return mData[index];
     }
 

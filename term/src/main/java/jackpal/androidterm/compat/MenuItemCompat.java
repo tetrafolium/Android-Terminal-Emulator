@@ -12,12 +12,12 @@ public class MenuItemCompat {
     public static final int SHOW_AS_ACTION_WITH_TEXT = 4;
 
     private static class Api11OrLater {
-        public static void setShowAsAction(MenuItem item, int actionEnum) {
+        public static void setShowAsAction(final MenuItem item, final int actionEnum) {
             item.setShowAsAction(actionEnum);
         }
     }
 
-    public static void setShowAsAction(MenuItem item, int actionEnum) {
+    public static void setShowAsAction(final MenuItem item, final int actionEnum) {
         if (AndroidCompat.SDK >= 11) {
             Api11OrLater.setShowAsAction(item, actionEnum);
         }

@@ -50,14 +50,14 @@ class EmulatorDebug {
      */
     public static final String LOG_TAG = "EmulatorView";
 
-    public static String bytesToString(byte[] data, int base, int length) {
+    public static String bytesToString(final byte[] data, final int base, final int length) {
         StringBuilder buf = new StringBuilder();
         for (int i = 0; i < length; i++) {
             byte b = data[base + i];
             if (b < 32 || b > 126) {
                 buf.append(String.format("\\x%02x", b));
             } else {
-                buf.append((char)b);
+                buf.append((char) b);
             }
         }
         return buf.toString();

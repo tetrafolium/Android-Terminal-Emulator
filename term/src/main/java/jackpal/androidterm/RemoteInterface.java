@@ -49,19 +49,19 @@ public class RemoteInterface extends Activity {
     private TermService mTermService;
     private Intent mTSIntent;
     private ServiceConnection mTSConnection = new ServiceConnection() {
-        public void onServiceConnected(ComponentName className, IBinder service) {
+        public void onServiceConnected(final ComponentName className, final IBinder service) {
             TermService.TSBinder binder = (TermService.TSBinder) service;
             mTermService = binder.getService();
             handleIntent();
         }
 
-        public void onServiceDisconnected(ComponentName className) {
+        public void onServiceDisconnected(final ComponentName className) {
             mTermService = null;
         }
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -131,7 +131,7 @@ public class RemoteInterface extends Activity {
     /**
      *  Quote a string so it can be used as a parameter in bash and similar shells.
      */
-    public static String quoteForBash(String s) {
+    public static String quoteForBash(final String s) {
         StringBuilder builder = new StringBuilder();
         String specialChars = "\"\\$`!";
         builder.append('"');
@@ -147,7 +147,7 @@ public class RemoteInterface extends Activity {
         return builder.toString();
     }
 
-    protected String openNewWindow(String iInitialCommand) {
+    protected String openNewWindow(final String iInitialCommand) {
         TermService service = getTermService();
 
         String initialCommand = mSettings.getInitialCommand();
@@ -179,7 +179,7 @@ public class RemoteInterface extends Activity {
         }
     }
 
-    protected String appendToWindow(String handle, String iInitialCommand) {
+    protected String appendToWindow(final String handle, final String iInitialCommand) {
         TermService service = getTermService();
 
         // Find the target window

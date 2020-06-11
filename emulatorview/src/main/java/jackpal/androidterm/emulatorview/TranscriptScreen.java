@@ -53,12 +53,12 @@ class TranscriptScreen implements Screen {
      *        transcript that holds lines that have scrolled off the top of the
      *        screen.
      */
-    public TranscriptScreen(int columns, int totalRows, int screenRows,
-            ColorScheme scheme) {
+    public TranscriptScreen(final int columns, final int totalRows, final int screenRows,
+            final ColorScheme scheme) {
         init(columns, totalRows, screenRows, TextStyle.kNormalTextStyle);
     }
 
-    private void init(int columns, int totalRows, int screenRows, int style) {
+    private void init(final int columns, final int totalRows, final int screenRows, final int style) {
         mColumns = columns;
         mTotalRows = totalRows;
         mScreenRows = screenRows;
@@ -67,7 +67,7 @@ class TranscriptScreen implements Screen {
         mData.blockSet(0, 0, mColumns, mScreenRows, ' ', style);
     }
 
-    public void setColorScheme(ColorScheme scheme) {
+    public void setColorScheme(final ColorScheme scheme) {
         mData.setDefaultStyle(TextStyle.kNormalTextStyle);
     }
 
@@ -82,7 +82,7 @@ class TranscriptScreen implements Screen {
         mData = null;
     }
 
-    public void setLineWrap(int row) {
+    public void setLineWrap(final int row) {
         mData.setLineWrap(row);
     }
 
@@ -95,11 +95,11 @@ class TranscriptScreen implements Screen {
      * @param foreColor the foreground color
      * @param backColor the background color
      */
-    public void set(int x, int y, int codePoint, int style) {
+    public void set(final int x, final int y, final int codePoint, final int style) {
         mData.setChar(x, y, codePoint, style);
     }
 
-    public void set(int x, int y, byte b, int style) {
+    public void set(final int x, final int y, final byte b, final int style) {
         mData.setChar(x, y, b, style);
     }
 
@@ -111,7 +111,7 @@ class TranscriptScreen implements Screen {
      * @param bottomMargin One line after the last line that is scrolled.
      * @param style the style for the newly exposed line.
      */
-    public void scroll(int topMargin, int bottomMargin, int style) {
+    public void scroll(final int topMargin, final int bottomMargin, final int style) {
         mData.scroll(topMargin, bottomMargin, style);
     }
 
@@ -128,7 +128,7 @@ class TranscriptScreen implements Screen {
      * @param dx destination X coordinate
      * @param dy destination Y coordinate
      */
-    public void blockCopy(int sx, int sy, int w, int h, int dx, int dy) {
+    public void blockCopy(final int sx, final int sy, final int w, final int h, final int dx, final int dy) {
         mData.blockCopy(sx, sy, w, h, dx, dy);
     }
 
@@ -144,8 +144,8 @@ class TranscriptScreen implements Screen {
      * @param h height
      * @param val value to set.
      */
-    public void blockSet(int sx, int sy, int w, int h, int val,
-            int style) {
+    public void blockSet(final int sx, final int sy, final int w, final int h, final int val,
+            final int style) {
         mData.blockSet(sx, sy, w, h, val, style);
     }
 
@@ -163,8 +163,8 @@ class TranscriptScreen implements Screen {
      * @param imeText current IME text, to be rendered at cursor
      * @param cursorMode the cursor mode. See TextRenderer.
      */
-    public final void drawText(int row, Canvas canvas, float x, float y,
-            TextRenderer renderer, int cx, int selx1, int selx2, String imeText, int cursorMode) {
+    public final void drawText(final int row, final Canvas canvas, final float x, final float y,
+            final TextRenderer renderer, final int cx, final int selx1, final int selx2, final String imeText, final int cursorMode) {
         char[] line;
         StyleRow color;
         int cursorWidth = 1;
@@ -185,9 +185,9 @@ class TranscriptScreen implements Screen {
             // Line is blank.
             if (selx1 != selx2) {
                 // We need to draw a selection
-                char[] blank = new char[selx2-selx1];
+                char[] blank = new char[selx2 - selx1];
                 Arrays.fill(blank, ' ');
-                renderer.drawTextRun(canvas, x, y, selx1, selx2-selx1,
+                renderer.drawTextRun(canvas, x, y, selx1, selx2 - selx1,
                                 blank, 0, 1, true, defaultStyle,
                                 cx, 0, 1, 1, cursorMode);
             }
@@ -233,8 +233,8 @@ class TranscriptScreen implements Screen {
             }
             int style = color.get(column);
             boolean selectionStyle = false;
-            if ((column >= selx1 || (displayCharWidth == 2 && column == selx1 - 1)) &&
-                    column <= selx2) {
+            if ((column >= selx1 || (displayCharWidth == 2 && column == selx1 - 1))
+                    && column <= selx2) {
                 // Draw selection:
                 selectionStyle = true;
             }
@@ -316,19 +316,19 @@ class TranscriptScreen implements Screen {
         return internalGetTranscriptText(null, 0, -mData.getActiveTranscriptRows(), mColumns, mScreenRows);
     }
 
-    public String getTranscriptText(GrowableIntArray colors) {
+    public String getTranscriptText(final GrowableIntArray colors) {
         return internalGetTranscriptText(colors, 0, -mData.getActiveTranscriptRows(), mColumns, mScreenRows);
     }
 
-    public String getSelectedText(int selX1, int selY1, int selX2, int selY2) {
+    public String getSelectedText(final int selX1, final int selY1, final int selX2, final int selY2) {
         return internalGetTranscriptText(null, selX1, selY1, selX2, selY2);
     }
 
-    public String getSelectedText(GrowableIntArray colors, int selX1, int selY1, int selX2, int selY2) {
+    public String getSelectedText(final GrowableIntArray colors, final int selX1, final int selY1, final int selX2, final int selY2) {
         return internalGetTranscriptText(colors, selX1, selY1, selX2, selY2);
     }
 
-    private String internalGetTranscriptText(GrowableIntArray colors, int selX1, int selY1, int selX2, int selY2) {
+    private String internalGetTranscriptText(final GrowableIntArray colors, final int selX1, final int selY1, final int selX2, final int selY2) {
         StringBuilder builder = new StringBuilder();
         UnicodeTranscript data = mData;
         int columns = mColumns;
@@ -343,10 +343,10 @@ class TranscriptScreen implements Screen {
         for (int row = selY1; row <= selY2; row++) {
             int x1 = 0;
             int x2;
-            if ( row == selY1 ) {
+            if (row == selY1) {
                 x1 = selX1;
             }
-            if ( row == selY2 ) {
+            if (row == selY2) {
                 x2 = selX2 + 1;
                 if (x2 > columns) {
                     x2 = columns;
@@ -430,7 +430,7 @@ class TranscriptScreen implements Screen {
         return builder.toString();
     }
 
-    public boolean fastResize(int columns, int rows, int[] cursor) {
+    public boolean fastResize(final int columns, final int rows, final int[] cursor) {
         if (mData == null) {
             // XXX Trying to resize a finished TranscriptScreen?
             return true;
@@ -444,7 +444,7 @@ class TranscriptScreen implements Screen {
         }
     }
 
-    public void resize(int columns, int rows, int style) {
+    public void resize(final int columns, final int rows, final int style) {
         // Ensure backing store will be large enough to hold the whole screen 
         if (rows > mTotalRows) {
             mTotalRows = rows;
@@ -458,17 +458,15 @@ class TranscriptScreen implements Screen {
      * @param row The row index to be queried
      * @return The line of text at this row index
      */
-    char[] getScriptLine(int row)
+    char[] getScriptLine(final int row)
     {
         try
         {
             return mData.getLine(row);
-        }
-        catch (IllegalArgumentException e)
+        } catch (IllegalArgumentException e)
         {
             return null;
-        }
-        catch (NullPointerException e)
+        } catch (NullPointerException e)
         {
             return null;
         }
@@ -479,7 +477,7 @@ class TranscriptScreen implements Screen {
      * @param row The row to check for line-wrap status
      * @return The line wrap status of the row provided
      */
-    boolean getScriptLineWrap(int row)
+    boolean getScriptLineWrap(final int row)
     {
         return mData.getLineWrap(row);
     }
@@ -488,7 +486,7 @@ class TranscriptScreen implements Screen {
      * Get whether the line at this index is "basic" (contains only BMP
      * characters of width 1).
      */
-    boolean isBasicLine(int row) {
+    boolean isBasicLine(final int row) {
         if (mData != null) {
             return mData.isBasicLine(row);
         } else {

@@ -34,7 +34,7 @@ import android.util.Log;
  * video, color) alternate screen cursor key and keypad escape sequences.
  */
 class TerminalEmulator {
-    public void setKeyListener(TermKeyListener l) {
+    public void setKeyListener(final TermKeyListener l) {
         mKeyListener = l;
     }
     private TermKeyListener mKeyListener;
@@ -337,16 +337,16 @@ class TerminalEmulator {
         for (char i = 0; i < 128; ++i) {
             mSpecialGraphicsCharMap[i] = i;
         }
-        mSpecialGraphicsCharMap['_'] = ' ';	// Blank
-        mSpecialGraphicsCharMap['b'] = 0x2409;	// Tab
-        mSpecialGraphicsCharMap['c'] = 0x240C;	// Form feed
-        mSpecialGraphicsCharMap['d'] = 0x240D;	// Carriage return
-        mSpecialGraphicsCharMap['e'] = 0x240A;	// Line feed
-        mSpecialGraphicsCharMap['h'] = 0x2424;	// New line
-        mSpecialGraphicsCharMap['i'] = 0x240B;	// Vertical tab/"lantern"
-        mSpecialGraphicsCharMap['}'] = 0x00A3;	// Pound sterling symbol
-        mSpecialGraphicsCharMap['f'] = 0x00B0;	// Degree symbol
-        mSpecialGraphicsCharMap['`'] = 0x2B25;	// Diamond
+        mSpecialGraphicsCharMap['_'] = ' ';     // Blank
+        mSpecialGraphicsCharMap['b'] = 0x2409;  // Tab
+        mSpecialGraphicsCharMap['c'] = 0x240C;  // Form feed
+        mSpecialGraphicsCharMap['d'] = 0x240D;  // Carriage return
+        mSpecialGraphicsCharMap['e'] = 0x240A;  // Line feed
+        mSpecialGraphicsCharMap['h'] = 0x2424;  // New line
+        mSpecialGraphicsCharMap['i'] = 0x240B;  // Vertical tab/"lantern"
+        mSpecialGraphicsCharMap['}'] = 0x00A3;  // Pound sterling symbol
+        mSpecialGraphicsCharMap['f'] = 0x00B0;  // Degree symbol
+        mSpecialGraphicsCharMap['`'] = 0x2B25;  // Diamond
         mSpecialGraphicsCharMap['~'] = 0x2022;	// Bullet point
         mSpecialGraphicsCharMap['y'] = 0x2264;	// Less-than-or-equals sign (<=)
         mSpecialGraphicsCharMap['|'] = 0x2260;	// Not equals sign (!=)
@@ -409,7 +409,7 @@ class TerminalEmulator {
      * @param rows the number of rows to emulate
      * @param scheme the default color scheme of this emulator
      */
-    public TerminalEmulator(TermSession session, TranscriptScreen screen, int columns, int rows, ColorScheme scheme) {
+    public TerminalEmulator(final TermSession session, final TranscriptScreen screen, final int columns, final int rows, final ColorScheme scheme) {
         mSession = session;
         mMainBuffer = screen;
         mScreen = mMainBuffer;
@@ -433,7 +433,7 @@ class TerminalEmulator {
         return mScreen;
     }
 
-    public void updateSize(int columns, int rows) {
+    public void updateSize(final int columns, final int rows) {
         if (mRows == rows && mColumns == columns) {
             return;
         }
@@ -454,7 +454,7 @@ class TerminalEmulator {
         }
 
         // Try to resize the screen without getting the transcript
-        int[] cursor = { mCursorCol, mCursorRow };
+        int[] cursor = {mCursorCol, mCursorRow };
         boolean fastResize = screen.fastResize(columns, rows, cursor);
 
         GrowableIntArray cursorColor = null;
@@ -511,7 +511,7 @@ class TerminalEmulator {
             mCursorCol = 0;
             mAboutToAutoWrap = false;
 
-            int end = altTranscriptText.length()-1;
+            int end = altTranscriptText.length() - 1;
             /* Unlike for the main transcript below, don't trim off trailing
              * newlines -- the alternate transcript lacks a cursor marking, so
              * we might introduce an unwanted vertical shift in the screen
@@ -520,7 +520,7 @@ class TerminalEmulator {
             int colorOffset = 0;
             for (int i = 0; i <= end; i++) {
                 c = altTranscriptText.charAt(i);
-                int style = altColors.at(i-colorOffset);
+                int style = altColors.at(i - colorOffset);
                 if (Character.isHighSurrogate(c)) {
                     cLow = altTranscriptText.charAt(++i);
                     emit(Character.toCodePoint(c, cLow), style);
@@ -558,15 +558,15 @@ class TerminalEmulator {
         int newCursorRow = -1;
         int newCursorCol = -1;
         int newCursorTranscriptPos = -1;
-        int end = transcriptText.length()-1;
+        int end = transcriptText.length() - 1;
         while ((end >= 0) && transcriptText.charAt(end) == '\n') {
             end--;
         }
         char c, cLow;
         int colorOffset = 0;
-        for(int i = 0; i <= end; i++) {
+        for (int i = 0; i <= end; i++) {
             c = transcriptText.charAt(i);
-            int style = colors.at(i-colorOffset);
+            int style = colors.at(i - colorOffset);
             if (Character.isHighSurrogate(c)) {
                 cLow = transcriptText.charAt(++i);
                 emit(Character.toCodePoint(c, cLow), style);
@@ -660,7 +660,7 @@ class TerminalEmulator {
      * @param base the first index of the array to process
      * @param length the number of bytes in the array to process
      */
-    public void append(byte[] buffer, int base, int length) {
+    public void append(final byte[] buffer, final int base, final int length) {
         if (EmulatorDebug.LOG_CHARACTERS_FLAG) {
             Log.d(EmulatorDebug.LOG_TAG, "In: '" + EmulatorDebug.bytesToString(buffer, base, length) + "'");
         }
@@ -677,11 +677,11 @@ class TerminalEmulator {
         }
     }
 
-    private void process(byte b) {
+    private void process(final byte b) {
         process(b, true);
     }
 
-    private void process(byte b, boolean doUTF8) {
+    private void process(final byte b, final boolean doUTF8) {
         // Let the UTF-8 decoder try to handle it if we're in UTF-8 mode
         if (doUTF8 && mUTF8Mode && handleUTF8Sequence(b)) {
             return;
@@ -810,7 +810,7 @@ class TerminalEmulator {
         }
     }
 
-    private boolean handleUTF8Sequence(byte b) {
+    private boolean handleUTF8Sequence(final byte b) {
         if (mUTF8ToFollow == 0 && (b & 0x80) == 0) {
             // ASCII character -- we don't need to handle this
             return false;
@@ -873,7 +873,7 @@ class TerminalEmulator {
         return true;
     }
 
-    private void setAltCharSet(boolean alternateCharSet) {
+    private void setAltCharSet(final boolean alternateCharSet) {
         mAlternateCharSet = alternateCharSet;
         computeEffectiveCharSet();
     }
@@ -883,7 +883,7 @@ class TerminalEmulator {
         mUseAlternateCharSet = charSet == CHAR_SET_SPECIAL_GRAPHICS;
     }
 
-    private int nextTabStop(int cursorCol) {
+    private int nextTabStop(final int cursorCol) {
         for (int i = cursorCol + 1; i < mColumns; i++) {
             if (mTabStop[i]) {
                 return i;
@@ -892,7 +892,7 @@ class TerminalEmulator {
         return mColumns - 1;
     }
 
-    private int prevTabStop(int cursorCol) {
+    private int prevTabStop(final int cursorCol) {
         for (int i = cursorCol - 1; i >= 0; i--) {
             if (mTabStop[i]) {
                 return i;
@@ -901,7 +901,7 @@ class TerminalEmulator {
         return 0;
     }
 
-    private void doEscPercent(byte b) {
+    private void doEscPercent(final byte b) {
         switch (b) {
         case '@': // Esc % @ -- return to ISO 2022 mode
            setUTF8Mode(false);
@@ -916,7 +916,7 @@ class TerminalEmulator {
         }
     }
 
-    private void doEscLSBQuest(byte b) {
+    private void doEscLSBQuest(final byte b) {
         int arg = getArg0(0);
         int mask = getDecFlagsMask(arg);
         int oldFlags = mDecFlags;
@@ -988,7 +988,7 @@ class TerminalEmulator {
         }
     }
 
-    private int getDecFlagsMask(int argument) {
+    private int getDecFlagsMask(final int argument) {
         if (argument >= 1 && argument <= 32) {
             return (1 << argument);
         }
@@ -996,7 +996,7 @@ class TerminalEmulator {
         return 0;
     }
 
-    private void startEscapeSequence(int escapeState) {
+    private void startEscapeSequence(final int escapeState) {
         mEscapeState = escapeState;
         mArgIndex = 0;
         for (int j = 0; j < MAX_ESCAPE_PARAMETERS; j++) {
@@ -1017,20 +1017,20 @@ class TerminalEmulator {
         mContinueSequence = true;
     }
 
-    private void continueSequence(int state) {
+    private void continueSequence(final int state) {
         mEscapeState = state;
         mContinueSequence = true;
     }
 
-    private void doEscSelectLeftParen(byte b) {
+    private void doEscSelectLeftParen(final byte b) {
         doSelectCharSet(0, b);
     }
 
-    private void doEscSelectRightParen(byte b) {
+    private void doEscSelectRightParen(final byte b) {
         doSelectCharSet(1, b);
     }
 
-    private void doSelectCharSet(int charSetIndex, byte b) {
+    private void doSelectCharSet(final int charSetIndex, final byte b) {
         int charSet;
         switch (b) {
         case 'A': // United Kingdom character set
@@ -1056,7 +1056,7 @@ class TerminalEmulator {
         computeEffectiveCharSet();
     }
 
-    private void doEscPound(byte b) {
+    private void doEscPound(final byte b) {
         switch (b) {
         case '8': // Esc # 8 - DECALN alignment test
             mScreen.blockSet(0, 0, mColumns, mRows, 'E',
@@ -1069,7 +1069,7 @@ class TerminalEmulator {
         }
     }
 
-    private void doEsc(byte b) {
+    private void doEsc(final byte b) {
         switch (b) {
         case '#':
             continueSequence(ESC_POUND);
@@ -1093,7 +1093,7 @@ class TerminalEmulator {
         case '8': // DECRC restore cursor
             setCursorRowCol(mSavedCursorRow, mSavedCursorCol);
             mEffect = mSavedEffect;
-            mDecFlags = (mDecFlags & ~ K_DECSC_DECRC_MASK)
+            mDecFlags = (mDecFlags & ~K_DECSC_DECRC_MASK)
                     | mSavedDecFlags_DECSC_DECRC;
             break;
 
@@ -1164,7 +1164,7 @@ class TerminalEmulator {
         }
     }
 
-    private void doEscLeftSquareBracket(byte b) {
+    private void doEscLeftSquareBracket(final byte b) {
         // CSI
         switch (b) {
         case '@': // ESC [ Pn @ - ICH Insert Characters
@@ -1343,7 +1343,7 @@ class TerminalEmulator {
             switch (getArg0(0)) {
             case 5: // Device status report (DSR):
                     // Answer is ESC [ 0 n (Terminal OK).
-                byte[] dsr = { (byte) 27, (byte) '[', (byte) '0', (byte) 'n' };
+                byte[] dsr = {(byte) 27, (byte) '[', (byte) '0', (byte) 'n' };
                 mSession.write(dsr, 0, dsr.length);
                 break;
 
@@ -1396,7 +1396,7 @@ class TerminalEmulator {
         // SGR
         for (int i = 0; i <= mArgIndex; i++) {
             int code = mArgs[i];
-            if ( code < 0) {
+            if (code < 0) {
                 if (mArgIndex > 0) {
                     continue;
                 } else {
@@ -1441,8 +1441,8 @@ class TerminalEmulator {
                 mEffect &= ~TextStyle.fxInvisible;
             } else if (code >= 30 && code <= 37) { // foreground color
                 mForeColor = code - 30;
-            } else if (code == 38 && i+2 <= mArgIndex && mArgs[i+1] == 5) { // foreground 256 color
-                int color = mArgs[i+2];
+            } else if (code == 38 && i + 2 <= mArgIndex && mArgs[i + 1] == 5) { // foreground 256 color
+                int color = mArgs[i + 2];
                 if (checkColor(color)) {
                     mForeColor = color;
                 }
@@ -1451,9 +1451,9 @@ class TerminalEmulator {
                 mForeColor = mDefaultForeColor;
             } else if (code >= 40 && code <= 47) { // background color
                 mBackColor = code - 40;
-            } else if (code == 48 && i+2 <= mArgIndex && mArgs[i+1] == 5) { // background 256 color
-                mBackColor = mArgs[i+2];
-                int color = mArgs[i+2];
+            } else if (code == 48 && i + 2 <= mArgIndex && mArgs[i + 1] == 5) { // background 256 color
+                mBackColor = mArgs[i + 2];
+                int color = mArgs[i + 2];
                 if (checkColor(color)) {
                     mBackColor = color;
                 }
@@ -1472,7 +1472,7 @@ class TerminalEmulator {
         }
     }
 
-    private boolean checkColor(int color) {
+    private boolean checkColor(final int color) {
         boolean result = isValidColor(color);
         if (!result) {
             if (EmulatorDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
@@ -1483,11 +1483,11 @@ class TerminalEmulator {
         return result;
     }
 
-    private boolean isValidColor(int color) {
+    private boolean isValidColor(final int color) {
         return color >= 0 && color < TextStyle.ciColorLength;
     }
 
-    private void doEscRightSquareBracket(byte b) {
+    private void doEscRightSquareBracket(final byte b) {
         switch (b) {
         case 0x7:
             doOSC();
@@ -1501,7 +1501,7 @@ class TerminalEmulator {
         }
     }
 
-    private void doEscRightSquareBracketEsc(byte b) {
+    private void doEscRightSquareBracketEsc(final byte b) {
         switch (b) {
         case '\\':
             doOSC();
@@ -1533,17 +1533,17 @@ class TerminalEmulator {
         finishSequence();
     }
 
-    private void changeTitle(int parameter, String title) {
+    private void changeTitle(final int parameter, final String title) {
         if (parameter == 0 || parameter == 2) {
             mSession.setTitle(title);
         }
     }
 
-    private void blockClear(int sx, int sy, int w) {
+    private void blockClear(final int sx, final int sy, final int w) {
         blockClear(sx, sy, w, 1);
     }
 
-    private void blockClear(int sx, int sy, int w, int h) {
+    private void blockClear(final int sx, final int sy, final int w, final int h) {
         mScreen.blockSet(sx, sy, w, h, ' ', getStyle());
     }
 
@@ -1563,7 +1563,7 @@ class TerminalEmulator {
         return TextStyle.encode(getForeColor(), getBackColor(),  getEffect());
     }
 
-    private void doSetMode(boolean newValue) {
+    private void doSetMode(final boolean newValue) {
         int modeBit = getArg0(0);
         switch (modeBit) {
         case 4:
@@ -1583,7 +1583,7 @@ class TerminalEmulator {
         setCursorPosition(getArg1(1) - 1, getArg0(1) - 1);
     }
 
-    private void setCursorPosition(int x, int y) {
+    private void setCursorPosition(final int x, final int y) {
         int effectiveTopMargin = 0;
         int effectiveBottomMargin = mRows;
         if ((mDecFlags & K_ORIGIN_MODE_MASK) != 0) {
@@ -1625,7 +1625,7 @@ class TerminalEmulator {
 
     private void scroll() {
         //System.out.println("Scroll(): mTopMargin " + mTopMargin + " mBottomMargin " + mBottomMargin);
-        mScrollCounter ++;
+        mScrollCounter++;
         mScreen.scroll(mTopMargin, mBottomMargin, getStyle());
     }
 
@@ -1634,7 +1634,7 @@ class TerminalEmulator {
      *
      * @param b The next ASCII character of the paramater sequence.
      */
-    private void parseArg(byte b) {
+    private void parseArg(final byte b) {
         if (b >= '0' && b <= '9') {
             if (mArgIndex < mArgs.length) {
                 int oldValue = mArgs[mArgIndex];
@@ -1658,16 +1658,16 @@ class TerminalEmulator {
         }
     }
 
-    private int getArg0(int defaultValue) {
+    private int getArg0(final int defaultValue) {
         return getArg(0, defaultValue, true);
     }
 
-    private int getArg1(int defaultValue) {
+    private int getArg1(final int defaultValue) {
         return getArg(1, defaultValue, true);
     }
 
-    private int getArg(int index, int defaultValue,
-            boolean treatZeroAsDefault) {
+    private int getArg(final int index, final int defaultValue,
+            final boolean treatZeroAsDefault) {
         int result = mArgs[index];
         if (result < 0 || (result == 0 && treatZeroAsDefault)) {
             result = defaultValue;
@@ -1679,7 +1679,7 @@ class TerminalEmulator {
         mOSCArgLength = 0;
     }
 
-    private void collectOSCArgs(byte b) {
+    private void collectOSCArgs(final byte b) {
         if (mOSCArgLength < MAX_OSC_STRING_LENGTH) {
             mOSCArg[mOSCArgLength++] = b;
             continueSequence();
@@ -1692,7 +1692,7 @@ class TerminalEmulator {
         mOSCArgTokenizerIndex = 0;
     }
 
-    private String nextOSCString(int delimiter) {
+    private String nextOSCString(final int delimiter) {
         int start = mOSCArgTokenizerIndex;
         int end = start;
         while (mOSCArgTokenizerIndex < mOSCArgLength) {
@@ -1706,13 +1706,13 @@ class TerminalEmulator {
             return "";
         }
         try {
-            return new String(mOSCArg, start, end-start, "UTF-8");
+            return new String(mOSCArg, start, end - start, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            return new String(mOSCArg, start, end-start);
+            return new String(mOSCArg, start, end - start);
         }
     }
 
-    private int nextOSCInt(int delimiter) {
+    private int nextOSCInt(final int delimiter) {
         int value = -1;
         while (mOSCArgTokenizerIndex < mOSCArgLength) {
             byte b = mOSCArg[mOSCArgTokenizerIndex++];
@@ -1730,21 +1730,21 @@ class TerminalEmulator {
         return value;
     }
 
-    private void unimplementedSequence(byte b) {
+    private void unimplementedSequence(final byte b) {
         if (EmulatorDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
             logError("unimplemented", b);
         }
         finishSequence();
     }
 
-    private void unknownSequence(byte b) {
+    private void unknownSequence(final byte b) {
         if (EmulatorDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
             logError("unknown", b);
         }
         finishSequence();
     }
 
-    private void unknownParameter(int parameter) {
+    private void unknownParameter(final int parameter) {
         if (EmulatorDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
             StringBuilder buf = new StringBuilder();
             buf.append("Unknown parameter");
@@ -1753,7 +1753,7 @@ class TerminalEmulator {
         }
     }
 
-    private void logError(String errorType, byte b) {
+    private void logError(final String errorType, final byte b) {
         if (EmulatorDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
             StringBuilder buf = new StringBuilder();
             buf.append(errorType);
@@ -1780,7 +1780,7 @@ class TerminalEmulator {
         }
     }
 
-    private void logError(String error) {
+    private void logError(final String error) {
         if (EmulatorDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
             Log.e(EmulatorDebug.LOG_TAG, error);
         }
@@ -1802,7 +1802,7 @@ class TerminalEmulator {
      * @param foreColor The foreground color of the character
      * @param backColor The background color of the character
      */
-    private void emit(int c, int style) {
+    private void emit(final int c, final int style) {
         boolean autoWrap = autoWrapEnabled();
         int width = UnicodeTranscript.charWidth(c);
 
@@ -1843,7 +1843,7 @@ class TerminalEmulator {
             mAboutToAutoWrap = (mCursorCol == mColumns - 1);
 
             //Force line-wrap flag to trigger even for lines being typed
-            if(mAboutToAutoWrap)
+            if (mAboutToAutoWrap)
                 mScreen.setLineWrap(mCursorRow);
         }
 
@@ -1853,11 +1853,11 @@ class TerminalEmulator {
         }
     }
 
-    private void emit(int c) {
+    private void emit(final int c) {
         emit(c, getStyle());
     }
 
-    private void emit(byte b) {
+    private void emit(final byte b) {
         if (mUseAlternateCharSet && b < 128) {
             emit((int) mSpecialGraphicsCharMap[b]);
         } else {
@@ -1870,7 +1870,7 @@ class TerminalEmulator {
      *
      * @param c A char[2] containing either a single UTF-16 char or a surrogate pair to be sent to the screen.
      */
-    private void emit(char[] c) {
+    private void emit(final char[] c) {
         if (Character.isHighSurrogate(c[0])) {
             emit(Character.toCodePoint(c[0], c[1]));
         } else {
@@ -1883,13 +1883,13 @@ class TerminalEmulator {
      *
      * @param c A char[] array whose contents are to be sent to the screen.
      */
-    private void emit(char[] c, int offset, int length, int style) {
+    private void emit(final char[] c, final int offset, final int length, final int style) {
         for (int i = offset; i < length; ++i) {
             if (c[i] == 0) {
                 break;
             }
             if (Character.isHighSurrogate(c[i])) {
-                emit(Character.toCodePoint(c[i], c[i+1]), style);
+                emit(Character.toCodePoint(c[i], c[i + 1]), style);
                 ++i;
             } else {
                 emit((int) c[i], style);
@@ -1897,19 +1897,19 @@ class TerminalEmulator {
         }
     }
 
-    private void setCursorRow(int row) {
+    private void setCursorRow(final int row) {
         mCursorRow = row;
         mAboutToAutoWrap = false;
     }
 
-    private void setCursorCol(int col) {
+    private void setCursorCol(final int col) {
         mCursorCol = col;
         mAboutToAutoWrap = false;
     }
 
-    private void setCursorRowCol(int row, int col) {
-        mCursorRow = Math.min(row, mRows-1);
-        mCursorCol = Math.min(col, mColumns-1);
+    private void setCursorRowCol(final int row, final int col) {
+        mCursorRow = Math.min(row, mRows - 1);
+        mCursorCol = Math.min(col, mColumns - 1);
         mAboutToAutoWrap = false;
     }
 
@@ -1962,14 +1962,14 @@ class TerminalEmulator {
         mInputCharBuffer.clear();
     }
 
-    public void setDefaultUTF8Mode(boolean defaultToUTF8Mode) {
+    public void setDefaultUTF8Mode(final boolean defaultToUTF8Mode) {
         mDefaultUTF8Mode = defaultToUTF8Mode;
         if (!mUTF8EscapeUsed) {
             setUTF8Mode(defaultToUTF8Mode);
         }
     }
 
-    public void setUTF8Mode(boolean utf8Mode) {
+    public void setUTF8Mode(final boolean utf8Mode) {
         if (utf8Mode && !mUTF8Mode) {
             mUTF8ToFollow = 0;
             mUTF8ByteBuffer.clear();
@@ -1985,11 +1985,11 @@ class TerminalEmulator {
         return mUTF8Mode;
     }
 
-    public void setUTF8ModeUpdateCallback(UpdateCallback utf8ModeNotify) {
+    public void setUTF8ModeUpdateCallback(final UpdateCallback utf8ModeNotify) {
         mUTF8ModeNotify = utf8ModeNotify;
     }
 
-    public void setColorScheme(ColorScheme scheme) {
+    public void setColorScheme(final ColorScheme scheme) {
         mDefaultForeColor = TextStyle.ciForeground;
         mDefaultBackColor = TextStyle.ciBackground;
         mMainBuffer.setColorScheme(scheme);
@@ -1998,7 +1998,7 @@ class TerminalEmulator {
         }
     }
 
-    public String getSelectedText(int x1, int y1, int x2, int y2) {
+    public String getSelectedText(final int x1, final int y1, final int x2, final int y2) {
         return mScreen.getSelectedText(x1, y1, x2, y2);
     }
 

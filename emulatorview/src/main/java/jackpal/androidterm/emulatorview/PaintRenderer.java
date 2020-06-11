@@ -23,7 +23,7 @@ import android.util.FloatMath;
 
 
 class PaintRenderer extends BaseTextRenderer {
-    public PaintRenderer(int fontSize, ColorScheme scheme) {
+    public PaintRenderer(final int fontSize, final ColorScheme scheme) {
         super(scheme);
         mTextPaint = new Paint();
         mTextPaint.setTypeface(Typeface.MONOSPACE);
@@ -36,16 +36,16 @@ class PaintRenderer extends BaseTextRenderer {
         mCharWidth = mTextPaint.measureText(EXAMPLE_CHAR, 0, 1);
     }
 
-    public void drawTextRun(Canvas canvas, float x, float y, int lineOffset,
-            int runWidth, char[] text, int index, int count,
-            boolean selectionStyle, int textStyle,
-            int cursorOffset, int cursorIndex, int cursorIncr, int cursorWidth, int cursorMode) {
+    public void drawTextRun(final Canvas canvas, final float x, final float y, final int lineOffset,
+            final int runWidth, final char[] text, final int index, final int count,
+            final boolean selectionStyle, final int textStyle,
+            final int cursorOffset, final int cursorIndex, final int cursorIncr, final int cursorWidth, final int cursorMode) {
         int foreColor = TextStyle.decodeForeColor(textStyle);
         int backColor = TextStyle.decodeBackColor(textStyle);
         int effect = TextStyle.decodeEffect(textStyle);
 
-        boolean inverse =  mReverseVideo ^
-                (effect & (TextStyle.fxInverse | TextStyle.fxItalic)) != 0;
+        boolean inverse =  mReverseVideo
+                ^ (effect & (TextStyle.fxInverse | TextStyle.fxItalic)) != 0;
         if (inverse) {
             int temp = foreColor;
             foreColor = backColor;
@@ -87,7 +87,7 @@ class PaintRenderer extends BaseTextRenderer {
             int textPaintColor;
             if (foreColor < 8 && bold) {
                 // In 16-color mode, bold also implies bright foreground colors
-                textPaintColor = mPalette[foreColor+8];
+                textPaintColor = mPalette[foreColor + 8];
             } else {
                 textPaintColor = mPalette[foreColor];
             }
@@ -99,7 +99,7 @@ class PaintRenderer extends BaseTextRenderer {
                 // Text before cursor
                 int countBeforeCursor = cursorIndex - index;
                 int countAfterCursor = count - (countBeforeCursor + cursorIncr);
-                if (countBeforeCursor > 0){
+                if (countBeforeCursor > 0) {
                     canvas.drawText(text, index, countBeforeCursor, left, textOriginY, mTextPaint);
                 }
                 // Text at cursor

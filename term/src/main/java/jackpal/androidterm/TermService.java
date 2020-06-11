@@ -59,16 +59,16 @@ public class TermService extends Service implements TermSession.FinishCallback
     private final IBinder mTSBinder = new TSBinder();
 
     @Override
-    public void onStart(Intent intent, int flags) {
+    public void onStart(final Intent intent, final int flags) {
     }
 
     /* This should be @Override if building with API Level >=5 */
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(final Intent intent, final int flags, final int startId) {
         return COMPAT_START_STICKY;
     }
 
     @Override
-    public IBinder onBind(Intent intent) {
+    public IBinder onBind(final Intent intent) {
         if (TermExec.SERVICE_ACTION_V1.equals(intent.getAction())) {
             Log.i("TermService", "Outside process called onBind()");
 
@@ -124,7 +124,7 @@ public class TermService extends Service implements TermSession.FinishCallback
         return mTermSessions;
     }
 
-    public void onSessionFinish(TermSession session) {
+    public void onSessionFinish(final TermSession session) {
         mTermSessions.remove(session);
     }
 
@@ -191,7 +191,7 @@ public class TermService extends Service implements TermSession.FinishCallback
 
                         return result.getIntentSender();
                     }
-                } catch (PackageManager.NameNotFoundException ignore) {}
+                } catch (PackageManager.NameNotFoundException ignore) { }
             }
 
             return null;
@@ -202,13 +202,13 @@ public class TermService extends Service implements TermSession.FinishCallback
         private final PendingIntent result;
         private final ResultReceiver callback;
 
-        public RBinderCleanupCallback(PendingIntent result, ResultReceiver callback) {
+        public RBinderCleanupCallback(final PendingIntent result, final ResultReceiver callback) {
             this.result = result;
             this.callback = callback;
         }
 
         @Override
-        public void onSessionFinish(TermSession session) {
+        public void onSessionFinish(final TermSession session) {
             result.cancel();
 
             callback.send(0, new Bundle());

@@ -56,7 +56,7 @@ import android.os.Message;
  * and closes the attached I/O streams.
  */
 public class TermSession {
-    public void setKeyListener(TermKeyListener l) {
+    public void setKeyListener(final TermKeyListener l) {
         mKeyListener = l;
     }
 
@@ -113,7 +113,7 @@ public class TermSession {
     private boolean mIsRunning = false;
     private Handler mMsgHandler = new Handler() {
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(final Message msg) {
             if (!mIsRunning) {
                 return;
             }
@@ -151,7 +151,7 @@ public class TermSession {
             @Override
             public void run() {
                 try {
-                    while(true) {
+                    while (true) {
                         int read = mTermIn.read(mBuffer);
                         if (read == -1) {
                             // EOF -- process exited
@@ -186,7 +186,7 @@ public class TermSession {
 
                 mWriterHandler = new Handler() {
                     @Override
-                    public void handleMessage(Message msg) {
+                    public void handleMessage(final Message msg) {
                         if (msg.what == NEW_OUTPUT) {
                             writeToOutput();
                         } else if (msg.what == FINISH) {
@@ -240,7 +240,7 @@ public class TermSession {
      * @param columns The number of columns in the terminal window.
      * @param rows The number of rows in the terminal window.
      */
-    public void initializeEmulator(int columns, int rows) {
+    public void initializeEmulator(final int columns, final int rows) {
         mTranscriptScreen = new TranscriptScreen(columns, TRANSCRIPT_ROWS, rows, mColorScheme);
         mEmulator = new TerminalEmulator(this, mTranscriptScreen, columns, rows, mColorScheme);
         mEmulator.setDefaultUTF8Mode(mDefaultUTF8Mode);
@@ -267,7 +267,7 @@ public class TermSession {
      * @param offset The offset into the array at which the data starts.
      * @param count The number of bytes to be written.
      */
-    public void write(byte[] data, int offset, int count) {
+    public void write(final byte[] data, final int offset, final int count) {
         try {
             while (count > 0) {
                 int written = mWriteQueue.write(data, offset, count);
@@ -290,7 +290,7 @@ public class TermSession {
      *
      * @param data The String to write to the terminal.
      */
-    public void write(String data) {
+    public void write(final String data) {
         try {
             byte[] bytes = data.getBytes("UTF-8");
             write(bytes, 0, bytes.length);
@@ -310,7 +310,7 @@ public class TermSession {
      *
      * @param codePoint The Unicode code point to write to the terminal.
      */
-    public void write(int codePoint) {
+    public void write(final int codePoint) {
         ByteBuffer byteBuf = mWriteByteBuffer;
         if (codePoint < 128) {
             // Fast path for ASCII characters
@@ -329,7 +329,7 @@ public class TermSession {
         encoder.reset();
         encoder.encode(charBuf, byteBuf, true);
         encoder.flush(byteBuf);
-        write(byteBuf.array(), 0, byteBuf.position()-1);
+        write(byteBuf.array(), 0, byteBuf.position() - 1);
     }
 
     /* Notify the writer thread that there's new output waiting */
@@ -356,7 +356,7 @@ public class TermSession {
      *
      * @param termOut This session's {@link OutputStream}.
      */
-    public void setTermOut(OutputStream termOut) {
+    public void setTermOut(final OutputStream termOut) {
         mTermOut = termOut;
     }
 
@@ -374,7 +374,7 @@ public class TermSession {
      *
      * @param termIn This session's {@link InputStream}.
      */
-    public void setTermIn(InputStream termIn) {
+    public void setTermIn(final InputStream termIn) {
         mTermIn = termIn;
     }
 
@@ -399,7 +399,7 @@ public class TermSession {
      *
      * @param notify The {@link UpdateCallback} to be invoked on changes.
      */
-    public void setUpdateCallback(UpdateCallback notify) {
+    public void setUpdateCallback(final UpdateCallback notify) {
         mNotify = notify;
     }
 
@@ -423,7 +423,7 @@ public class TermSession {
     /**
      * Change the terminal session's title.
      */
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         mTitle = title;
         notifyTitleChanged();
     }
@@ -434,7 +434,7 @@ public class TermSession {
      *
      * @param listener The {@link UpdateCallback} to be invoked on changes.
      */
-    public void setTitleChangedListener(UpdateCallback listener) {
+    public void setTitleChangedListener(final UpdateCallback listener) {
         mTitleChangedListener = listener;
     }
 
@@ -462,7 +462,7 @@ public class TermSession {
      * @param columns The number of columns in the terminal window.
      * @param rows The number of rows in the terminal window.
      */
-    public void updateSize(int columns, int rows) {
+    public void updateSize(final int columns, final int rows) {
         if (mEmulator == null) {
             initializeEmulator(columns, rows);
         } else {
@@ -511,7 +511,7 @@ public class TermSession {
      * @param offset The offset into the buffer where the read data begins.
      * @param count The number of bytes read.
      */
-    protected void processInput(byte[] data, int offset, int count) {
+    protected void processInput(final byte[] data, final int offset, final int count) {
         mEmulator.append(data, offset, count);
     }
 
@@ -524,7 +524,7 @@ public class TermSession {
      * @param offset The starting offset into the buffer of the data.
      * @param count The length of the data to be written.
      */
-    protected final void appendToEmulator(byte[] data, int offset, int count) {
+    protected final void appendToEmulator(final byte[] data, final int offset, final int count) {
         mEmulator.append(data, offset, count);
     }
 
@@ -534,7 +534,7 @@ public class TermSession {
      * @param scheme The {@link ColorScheme} to be used (use null for the
      *               default scheme).
      */
-    public void setColorScheme(ColorScheme scheme) {
+    public void setColorScheme(final ColorScheme scheme) {
         if (scheme == null) {
             scheme = BaseTextRenderer.defaultColorScheme;
         }
@@ -556,7 +556,7 @@ public class TermSession {
      * @param utf8ByDefault Whether the terminal emulator should be in UTF-8
      *                      mode by default.
      */
-    public void setDefaultUTF8Mode(boolean utf8ByDefault) {
+    public void setDefaultUTF8Mode(final boolean utf8ByDefault) {
         mDefaultUTF8Mode = utf8ByDefault;
         if (mEmulator == null) {
             return;
@@ -583,7 +583,7 @@ public class TermSession {
      *
      * @param utf8ModeNotify The {@link UpdateCallback} to be invoked.
      */
-    public void setUTF8ModeUpdateCallback(UpdateCallback utf8ModeNotify) {
+    public void setUTF8ModeUpdateCallback(final UpdateCallback utf8ModeNotify) {
         if (mEmulator != null) {
             mEmulator.setUTF8ModeUpdateCallback(utf8ModeNotify);
         }
@@ -603,7 +603,7 @@ public class TermSession {
      *
      * @param callback The {@link FinishCallback} to be invoked on finish.
      */
-    public void setFinishCallback(FinishCallback callback) {
+    public void setFinishCallback(final FinishCallback callback) {
         mFinishCallback = callback;
     }
 

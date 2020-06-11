@@ -63,7 +63,7 @@ class GenericTermSession extends TermSession {
         }
     };
 
-    GenericTermSession(ParcelFileDescriptor mTermFd, TermSettings settings, boolean exitOnEOF) {
+    GenericTermSession(final ParcelFileDescriptor mTermFd, final TermSettings settings, final boolean exitOnEOF) {
         super(exitOnEOF);
 
         this.mTermFd = mTermFd;
@@ -73,14 +73,14 @@ class GenericTermSession extends TermSession {
         updatePrefs(settings);
     }
 
-    public void updatePrefs(TermSettings settings) {
+    public void updatePrefs(final TermSettings settings) {
         mSettings = settings;
         setColorScheme(new ColorScheme(settings.getColorScheme()));
         setDefaultUTF8Mode(settings.defaultToUTF8Mode());
     }
 
     @Override
-    public void initializeEmulator(int columns, int rows) {
+    public void initializeEmulator(final int columns, final int rows) {
         if (VTTEST_MODE) {
             columns = 80;
             rows = 24;
@@ -92,7 +92,7 @@ class GenericTermSession extends TermSession {
     }
 
     @Override
-    public void updateSize(int columns, int rows) {
+    public void updateSize(final int columns, final int rows) {
         if (VTTEST_MODE) {
             columns = 80;
             rows = 24;
@@ -104,7 +104,7 @@ class GenericTermSession extends TermSession {
 
     /* XXX We should really get this ourselves from the resource bundle, but
        we cannot hold a context */
-    public void setProcessExitMessage(String message) {
+    public void setProcessExitMessage(final String message) {
         mProcessExitMessage = message;
     }
 
@@ -142,7 +142,7 @@ class GenericTermSession extends TermSession {
      * @param defaultTitle The default title to use if this session's title is
      *     unset or an empty string.
      */
-    public String getTitle(String defaultTitle) {
+    public String getTitle(final String defaultTitle) {
         String title = getTitle();
         if (title != null && title.length() > 0) {
             return title;
@@ -151,7 +151,7 @@ class GenericTermSession extends TermSession {
         }
     }
 
-    public void setHandle(String handle) {
+    public void setHandle(final String handle) {
         if (mHandle != null) {
             throw new IllegalStateException("Cannot change handle once set");
         }
@@ -171,7 +171,7 @@ class GenericTermSession extends TermSession {
      * Set the widow size for a given pty. Allows programs
      * connected to the pty learn how large their screen is.
      */
-    void setPtyWindowSize(int row, int col, int xpixel, int ypixel) {
+    void setPtyWindowSize(final int row, final int col, final int xpixel, final int ypixel) {
         // If the tty goes away too quickly, this may get called after it's descriptor is closed
         if (!mTermFd.getFileDescriptor().valid())
             return;
@@ -190,7 +190,7 @@ class GenericTermSession extends TermSession {
      * Set or clear UTF-8 mode for a given pty.  Used by the terminal driver
      * to implement correct erase behavior in cooked mode (Linux >= 2.6.4).
      */
-    void setPtyUTF8Mode(boolean utf8Mode) {
+    void setPtyUTF8Mode(final boolean utf8Mode) {
         // If the tty goes away too quickly, this may get called after it's descriptor is closed
         if (!mTermFd.getFileDescriptor().valid())
             return;
@@ -220,7 +220,7 @@ class GenericTermSession extends TermSession {
         descriptorField.setAccessible(true);
     }
 
-    private static int getIntFd(ParcelFileDescriptor parcelFd) throws IOException {
+    private static int getIntFd(final ParcelFileDescriptor parcelFd) throws IOException {
         if (Build.VERSION.SDK_INT >= 12)
             return FdHelperHoneycomb.getFd(parcelFd);
         else {

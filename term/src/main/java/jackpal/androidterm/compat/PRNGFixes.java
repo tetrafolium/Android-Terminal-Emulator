@@ -53,7 +53,7 @@ public final class PRNGFixes {
         getBuildFingerprintAndDeviceSerial();
 
     /** Hidden constructor to prevent instantiation. */
-    private PRNGFixes() {}
+    private PRNGFixes() { }
 
     /**
      * Applies all fixes.
@@ -215,7 +215,7 @@ public final class PRNGFixes {
         private boolean mSeeded;
 
         @Override
-        protected void engineSetSeed(byte[] bytes) {
+        protected void engineSetSeed(final byte[] bytes) {
             try {
                 OutputStream out;
                 synchronized (sLock) {
@@ -234,7 +234,7 @@ public final class PRNGFixes {
         }
 
         @Override
-        protected void engineNextBytes(byte[] bytes) {
+        protected void engineNextBytes(final byte[] bytes) {
             if (!mSeeded) {
                 // Mix in the device- and invocation-specific seed.
                 engineSetSeed(generateSeed());
@@ -255,7 +255,7 @@ public final class PRNGFixes {
         }
 
         @Override
-        protected byte[] engineGenerateSeed(int size) {
+        protected byte[] engineGenerateSeed(final int size) {
             byte[] seed = new byte[size];
             engineNextBytes(seed);
             return seed;

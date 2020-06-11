@@ -10,7 +10,7 @@ import android.content.ClipboardManager;
 public class ClipboardManagerCompatV11 implements ClipboardManagerCompat {
     private final ClipboardManager clip;
 
-    public ClipboardManagerCompatV11(Context context) {
+    public ClipboardManagerCompatV11(final Context context) {
         clip = (ClipboardManager) context.getApplicationContext()
                 .getSystemService(Context.CLIPBOARD_SERVICE);
     }
@@ -28,7 +28,7 @@ public class ClipboardManagerCompatV11 implements ClipboardManagerCompat {
     }
 
     @Override
-    public void setText(CharSequence text) {
+    public void setText(final CharSequence text) {
         ClipData clipData = ClipData.newPlainText("simple text", text);
         clip.setPrimaryClip(clipData);
     }

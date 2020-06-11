@@ -39,7 +39,7 @@ public class TermActivity extends Activity
 
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState)
+    public void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.term_activity);
@@ -49,7 +49,7 @@ public class TermActivity extends Activity
            directly to the EmulatorView. */
         mEntry = (EditText) findViewById(R.id.term_entry);
         mEntry.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            public boolean onEditorAction(TextView v, int action, KeyEvent ev) {
+            public boolean onEditorAction(final TextView v, final int action, final KeyEvent ev) {
                 // Ignore enter-key-up events
                 if (ev != null && ev.getAction() == KeyEvent.ACTION_UP) {
                     return false;
@@ -73,7 +73,7 @@ public class TermActivity extends Activity
            sending a carriage return afterwards */
         Button sendButton = (Button) findViewById(R.id.term_entry_send);
         sendButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 // Don't try to send something if we're not connected yet
                 TermSession session = mSession;
                 if (mSession == null) {
@@ -216,7 +216,7 @@ public class TermActivity extends Activity
     /**
      * Connect to the Telnet server.
      */
-    public void connectToTelnet(String server) {
+    public void connectToTelnet(final String server) {
         String[] telnetServer = server.split(":", 2);
         final String hostname = telnetServer[0];
         int port = 23;
@@ -251,7 +251,7 @@ public class TermActivity extends Activity
      */
     Handler mHandler = new Handler() {
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(final Message msg) {
             if (msg.what == MSG_CONNECTED) {
                 createTelnetSession();
             }

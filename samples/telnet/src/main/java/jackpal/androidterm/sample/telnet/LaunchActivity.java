@@ -27,13 +27,13 @@ public class LaunchActivity extends Activity
 
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState)
+    public void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launch_activity);
         final Context context = this;
         addClickListener(R.id.launchLocal, new OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 Intent intent = new Intent(context, TermActivity.class);
                 intent.putExtra("type", "local");
                 startActivity(intent);
@@ -41,7 +41,7 @@ public class LaunchActivity extends Activity
 
         final EditText hostEdit = (EditText) findViewById(R.id.hostname);
         addClickListener(R.id.launchTelnet, new OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 Intent intent = new Intent(context, TermActivity.class);
                 intent.putExtra("type", "telnet");
                 String hostname = hostEdit.getText().toString();
@@ -50,7 +50,7 @@ public class LaunchActivity extends Activity
             }});
     }
 
-    private void addClickListener(int buttonId, OnClickListener onClickListener) {
+    private void addClickListener(final int buttonId, final OnClickListener onClickListener) {
         ((Button) findViewById(buttonId)).setOnClickListener(onClickListener);
     }
 }

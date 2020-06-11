@@ -9,7 +9,7 @@ class BoundSession extends GenericTermSession {
 
     private boolean fullyInitialized;
 
-    BoundSession(ParcelFileDescriptor ptmxFd, TermSettings settings, String issuerTitle) {
+    BoundSession(final ParcelFileDescriptor ptmxFd, final TermSettings settings, final String issuerTitle) {
         super(ptmxFd, settings, true);
 
         this.issuerTitle = issuerTitle;
@@ -28,7 +28,7 @@ class BoundSession extends GenericTermSession {
     }
 
     @Override
-    public void initializeEmulator(int columns, int rows) {
+    public void initializeEmulator(final int columns, final int rows) {
         super.initializeEmulator(columns, rows);
 
         fullyInitialized = true;

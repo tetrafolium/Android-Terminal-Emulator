@@ -23,7 +23,7 @@ import java.io.File;
  */
 public class FileCompat {
     private static class Api9OrLater {
-        public static boolean canExecute(File file) {
+        public static boolean canExecute(final File file) {
             return file.canExecute();
         }
     }
@@ -33,14 +33,14 @@ public class FileCompat {
             System.loadLibrary("jackpal-androidterm5");
         }
 
-        public static boolean canExecute(File file) {
+        public static boolean canExecute(final File file) {
             return testExecute(file.getAbsolutePath());
         }
 
         private static native boolean testExecute(String pathname);
     }
 
-    public static boolean canExecute(File file) {
+    public static boolean canExecute(final File file) {
         if (AndroidCompat.SDK < 9) {
             return Api8OrEarlier.canExecute(file);
         } else {
