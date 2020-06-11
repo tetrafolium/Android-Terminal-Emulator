@@ -9,7 +9,7 @@ public class ClipboardManagerCompatV1 implements ClipboardManagerCompat {
 
     public ClipboardManagerCompatV1(final Context context) {
         clip = (ClipboardManager) context.getApplicationContext()
-                .getSystemService(Context.CLIPBOARD_SERVICE);
+               .getSystemService(Context.CLIPBOARD_SERVICE);
     }
 
     @Override

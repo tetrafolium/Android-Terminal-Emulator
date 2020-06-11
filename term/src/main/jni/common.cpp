@@ -40,7 +40,7 @@
  * Register several native methods for one class.
  */
 int registerNativeMethods(JNIEnv* env, const char* className,
-    JNINativeMethod* gMethods, int numMethods)
+                          JNINativeMethod* gMethods, int numMethods)
 {
     jclass clazz;
 

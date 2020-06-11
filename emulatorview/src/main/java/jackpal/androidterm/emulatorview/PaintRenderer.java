@@ -37,15 +37,15 @@ class PaintRenderer extends BaseTextRenderer {
     }
 
     public void drawTextRun(final Canvas canvas, final float x, final float y, final int lineOffset,
-            final int runWidth, final char[] text, final int index, final int count,
-            final boolean selectionStyle, final int textStyle,
-            final int cursorOffset, final int cursorIndex, final int cursorIncr, final int cursorWidth, final int cursorMode) {
+                            final int runWidth, final char[] text, final int index, final int count,
+                            final boolean selectionStyle, final int textStyle,
+                            final int cursorOffset, final int cursorIndex, final int cursorIncr, final int cursorWidth, final int cursorMode) {
         int foreColor = TextStyle.decodeForeColor(textStyle);
         int backColor = TextStyle.decodeBackColor(textStyle);
         int effect = TextStyle.decodeEffect(textStyle);
 
         boolean inverse =  mReverseVideo
-                ^ (effect & (TextStyle.fxInverse | TextStyle.fxItalic)) != 0;
+                           ^ (effect & (TextStyle.fxInverse | TextStyle.fxItalic)) != 0;
         if (inverse) {
             int temp = foreColor;
             foreColor = backColor;
@@ -64,8 +64,8 @@ class PaintRenderer extends BaseTextRenderer {
 
         float left = x + lineOffset * mCharWidth;
         canvas.drawRect(left, y + mCharAscent - mCharDescent,
-                left + runWidth * mCharWidth, y,
-                mTextPaint);
+                        left + runWidth * mCharWidth, y,
+                        mTextPaint);
 
         boolean cursorVisible = lineOffset <= cursorOffset && cursorOffset < (lineOffset + runWidth);
         float cursorX = 0;
@@ -105,13 +105,13 @@ class PaintRenderer extends BaseTextRenderer {
                 // Text at cursor
                 mTextPaint.setColor(mPalette[TextStyle.ciCursorForeground]);
                 canvas.drawText(text, cursorIndex, cursorIncr, cursorX,
-                        textOriginY, mTextPaint);
+                                textOriginY, mTextPaint);
                 // Text after cursor
                 if (countAfterCursor > 0) {
                     mTextPaint.setColor(textPaintColor);
                     canvas.drawText(text, cursorIndex + cursorIncr, countAfterCursor,
-                            cursorX + cursorWidth * mCharWidth,
-                            textOriginY, mTextPaint);
+                                    cursorX + cursorWidth * mCharWidth,
+                                    textOriginY, mTextPaint);
                 }
             } else {
                 canvas.drawText(text, index, count, left, textOriginY, mTextPaint);

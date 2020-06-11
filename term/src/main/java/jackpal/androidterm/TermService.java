@@ -136,13 +136,13 @@ public class TermService extends Service implements TermSession.FinishCallback
 
             // distinct Intent Uri and PendingIntent requestCode must be sufficient to avoid collisions
             final Intent switchIntent = new Intent(RemoteInterface.PRIVACT_OPEN_NEW_WINDOW)
-                    .setData(Uri.parse(sessionHandle))
-                    .addCategory(Intent.CATEGORY_DEFAULT)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    .putExtra(RemoteInterface.PRIVEXTRA_TARGET_WINDOW, sessionHandle);
+            .setData(Uri.parse(sessionHandle))
+            .addCategory(Intent.CATEGORY_DEFAULT)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            .putExtra(RemoteInterface.PRIVEXTRA_TARGET_WINDOW, sessionHandle);
 
             final PendingIntent result = PendingIntent.getActivity(getApplicationContext(), sessionHandle.hashCode(),
-                    switchIntent, 0);
+                                         switchIntent, 0);
 
             final PackageManager pm = getPackageManager();
             final String[] pkgs = pm.getPackagesForUid(getCallingUid());
@@ -181,7 +181,7 @@ public class TermService extends Service implements TermSession.FinishCallback
                                     session.initializeEmulator(80, 24);
                                 } catch (Exception whatWentWrong) {
                                     Log.e("TermService", "Failed to bootstrap AIDL session: "
-                                            + whatWentWrong.getMessage());
+                                          + whatWentWrong.getMessage());
 
                                     if (session != null)
                                         session.finish();

@@ -218,7 +218,7 @@ class TerminalEmulator {
      * the DECSC / DECRC commands
      */
     private static final int K_DECSC_DECRC_MASK =
-            K_ORIGIN_MODE_MASK | K_WRAPAROUND_MODE_MASK;
+        K_ORIGIN_MODE_MASK | K_WRAPAROUND_MODE_MASK;
 
     /**
      * Holds multiple DECSET flags. The data is stored this way, rather than in
@@ -671,8 +671,8 @@ class TerminalEmulator {
                 mProcessedCharCount++;
             } catch (Exception e) {
                 Log.e(EmulatorDebug.LOG_TAG, "Exception while processing character "
-                        + Integer.toString(mProcessedCharCount) + " code "
-                        + Integer.toString(b), e);
+                      + Integer.toString(mProcessedCharCount) + " code "
+                      + Integer.toString(b), e);
             }
         }
     }
@@ -904,15 +904,15 @@ class TerminalEmulator {
     private void doEscPercent(final byte b) {
         switch (b) {
         case '@': // Esc % @ -- return to ISO 2022 mode
-           setUTF8Mode(false);
-           mUTF8EscapeUsed = true;
-           break;
+            setUTF8Mode(false);
+            mUTF8EscapeUsed = true;
+            break;
         case 'G': // Esc % G -- UTF-8 mode
-           setUTF8Mode(true);
-           mUTF8EscapeUsed = true;
-           break;
+            setUTF8Mode(true);
+            mUTF8EscapeUsed = true;
+            break;
         default: // unimplemented character set
-           break;
+            break;
         }
     }
 
@@ -1060,7 +1060,7 @@ class TerminalEmulator {
         switch (b) {
         case '8': // Esc # 8 - DECALN alignment test
             mScreen.blockSet(0, 0, mColumns, mRows, 'E',
-                    getStyle());
+                             getStyle());
             break;
 
         default:
@@ -1094,7 +1094,7 @@ class TerminalEmulator {
             setCursorRowCol(mSavedCursorRow, mSavedCursorCol);
             mEffect = mSavedEffect;
             mDecFlags = (mDecFlags & ~K_DECSC_DECRC_MASK)
-                    | mSavedDecFlags_DECSC_DECRC;
+                        | mSavedDecFlags_DECSC_DECRC;
             break;
 
         case 'D': // INDEX
@@ -1117,7 +1117,7 @@ class TerminalEmulator {
         case 'M': // Reverse index
             if (mCursorRow <= mTopMargin) {
                 mScreen.blockCopy(0, mTopMargin, mColumns, mBottomMargin
-                        - (mTopMargin + 1), 0, mTopMargin + 1);
+                                  - (mTopMargin + 1), 0, mTopMargin + 1);
                 blockClear(0, mTopMargin, mColumns);
             } else {
                 mCursorRow--;
@@ -1173,10 +1173,10 @@ class TerminalEmulator {
             int charsToInsert = Math.min(getArg0(1), charsAfterCursor);
             int charsToMove = charsAfterCursor - charsToInsert;
             mScreen.blockCopy(mCursorCol, mCursorRow, charsToMove, 1,
-                    mCursorCol + charsToInsert, mCursorRow);
+                              mCursorCol + charsToInsert, mCursorRow);
             blockClear(mCursorCol, mCursorRow, charsToInsert);
         }
-            break;
+        break;
 
         case 'A': // ESC [ Pn A - Cursor Up
             setCursorRow(Math.max(mTopMargin, mCursorRow - getArg0(1)));
@@ -1208,7 +1208,7 @@ class TerminalEmulator {
             case 0: // Clear below
                 blockClear(mCursorCol, mCursorRow, mColumns - mCursorCol);
                 blockClear(0, mCursorRow + 1, mColumns,
-                        mRows - (mCursorRow + 1));
+                           mRows - (mCursorRow + 1));
                 break;
 
             case 1: // Erase from the start of the screen to the cursor.
@@ -1252,10 +1252,10 @@ class TerminalEmulator {
             int linesToInsert = Math.min(getArg0(1), linesAfterCursor);
             int linesToMove = linesAfterCursor - linesToInsert;
             mScreen.blockCopy(0, mCursorRow, mColumns, linesToMove, 0,
-                    mCursorRow + linesToInsert);
+                              mCursorRow + linesToInsert);
             blockClear(0, mCursorRow, mColumns, linesToInsert);
         }
-            break;
+        break;
 
         case 'M': // Delete Lines
         {
@@ -1263,10 +1263,10 @@ class TerminalEmulator {
             int linesToDelete = Math.min(getArg0(1), linesAfterCursor);
             int linesToMove = linesAfterCursor - linesToDelete;
             mScreen.blockCopy(0, mCursorRow + linesToDelete, mColumns,
-                    linesToMove, 0, mCursorRow);
+                              linesToMove, 0, mCursorRow);
             blockClear(0, mCursorRow + linesToMove, mColumns, linesToDelete);
         }
-            break;
+        break;
 
         case 'P': // Delete Characters
         {
@@ -1274,10 +1274,10 @@ class TerminalEmulator {
             int charsToDelete = Math.min(getArg0(1), charsAfterCursor);
             int charsToMove = charsAfterCursor - charsToDelete;
             mScreen.blockCopy(mCursorCol + charsToDelete, mCursorRow,
-                    charsToMove, 1, mCursorCol, mCursorRow);
+                              charsToMove, 1, mCursorCol, mCursorRow);
             blockClear(mCursorCol + charsToMove, mCursorRow, charsToDelete);
         }
-            break;
+        break;
 
         case 'T': // Mouse tracking
             unimplementedSequence(b);
@@ -1334,7 +1334,7 @@ class TerminalEmulator {
             break;
 
         case 'm': // Esc [ Pn m - character attributes.
-                  // (can have up to 16 numerical arguments)
+            // (can have up to 16 numerical arguments)
             selectGraphicRendition();
             break;
 
@@ -1342,16 +1342,16 @@ class TerminalEmulator {
             //sendDeviceAttributes()
             switch (getArg0(0)) {
             case 5: // Device status report (DSR):
-                    // Answer is ESC [ 0 n (Terminal OK).
+                // Answer is ESC [ 0 n (Terminal OK).
                 byte[] dsr = {(byte) 27, (byte) '[', (byte) '0', (byte) 'n' };
                 mSession.write(dsr, 0, dsr.length);
                 break;
 
             case 6: // Cursor position report (CPR):
-                    // Answer is ESC [ y ; x R, where x,y is
-                    // the cursor location.
+                // Answer is ESC [ y ; x R, where x,y is
+                // the cursor location.
                 byte[] cpr = String.format(Locale.US, "\033[%d;%dR",
-                                 mCursorRow + 1, mCursorCol + 1).getBytes();
+                                           mCursorRow + 1, mCursorCol + 1).getBytes();
                 mSession.write(cpr, 0, cpr.length);
                 break;
 
@@ -1384,7 +1384,7 @@ class TerminalEmulator {
             // The cursor is placed in the home position
             setCursorRowCol(mTopMargin, 0);
         }
-            break;
+        break;
 
         default:
             parseArg(b);
@@ -1476,7 +1476,7 @@ class TerminalEmulator {
         boolean result = isValidColor(color);
         if ((!result) && (EmulatorDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES)) {
             Log.w(EmulatorDebug.LOG_TAG,
-                    String.format("Invalid color %d", color));
+                  String.format("Invalid color %d", color));
         }
         return result;
     }
@@ -1589,8 +1589,8 @@ class TerminalEmulator {
             effectiveBottomMargin = mBottomMargin;
         }
         int newRow =
-                Math.max(effectiveTopMargin, Math.min(effectiveTopMargin + y,
-                        effectiveBottomMargin - 1));
+            Math.max(effectiveTopMargin, Math.min(effectiveTopMargin + y,
+                     effectiveBottomMargin - 1));
         int newCol = Math.max(0, Math.min(x, mColumns - 1));
         setCursorRowCol(newRow, newCol);
     }
@@ -1600,23 +1600,23 @@ class TerminalEmulator {
         // video options. This is what the xterm terminal
         // emulator sends.
         byte[] attributes =
-                {
-                /* VT100 */
-                 (byte) 27, (byte) '[', (byte) '?', (byte) '1',
-                 (byte) ';', (byte) '2', (byte) 'c'
+        {
+            /* VT100 */
+            (byte) 27, (byte) '[', (byte) '?', (byte) '1',
+            (byte) ';', (byte) '2', (byte) 'c'
 
-                /* VT220
-                (byte) 27, (byte) '[', (byte) '?', (byte) '6',
-                (byte) '0',  (byte) ';',
-                (byte) '1',  (byte) ';',
-                (byte) '2',  (byte) ';',
-                (byte) '6',  (byte) ';',
-                (byte) '8',  (byte) ';',
-                (byte) '9',  (byte) ';',
-                (byte) '1',  (byte) '5', (byte) ';',
-                (byte) 'c'
-                */
-                };
+            /* VT220
+            (byte) 27, (byte) '[', (byte) '?', (byte) '6',
+            (byte) '0',  (byte) ';',
+            (byte) '1',  (byte) ';',
+            (byte) '2',  (byte) ';',
+            (byte) '6',  (byte) ';',
+            (byte) '8',  (byte) ';',
+            (byte) '9',  (byte) ';',
+            (byte) '1',  (byte) '5', (byte) ';',
+            (byte) 'c'
+            */
+        };
 
         mSession.write(attributes, 0, attributes.length);
     }
@@ -1665,7 +1665,7 @@ class TerminalEmulator {
     }
 
     private int getArg(final int index, final int defaultValue,
-            final boolean treatZeroAsDefault) {
+                       final boolean treatZeroAsDefault) {
         int result = mArgs[index];
         if (result < 0 || (result == 0 && treatZeroAsDefault)) {
             result = defaultValue;
@@ -1819,7 +1819,7 @@ class TerminalEmulator {
             int destCol = mCursorCol + width;
             if (destCol < mColumns) {
                 mScreen.blockCopy(mCursorCol, mCursorRow, mColumns - destCol,
-                        1, destCol, mCursorRow);
+                                  1, destCol, mCursorRow);
             }
         }
 

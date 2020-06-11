@@ -54,7 +54,7 @@ class TranscriptScreen implements Screen {
      *        screen.
      */
     public TranscriptScreen(final int columns, final int totalRows, final int screenRows,
-            final ColorScheme scheme) {
+                            final ColorScheme scheme) {
         init(columns, totalRows, screenRows, TextStyle.kNormalTextStyle);
     }
 
@@ -145,7 +145,7 @@ class TranscriptScreen implements Screen {
      * @param val value to set.
      */
     public void blockSet(final int sx, final int sy, final int w, final int h, final int val,
-            final int style) {
+                         final int style) {
         mData.blockSet(sx, sy, w, h, val, style);
     }
 
@@ -164,7 +164,7 @@ class TranscriptScreen implements Screen {
      * @param cursorMode the cursor mode. See TextRenderer.
      */
     public final void drawText(final int row, final Canvas canvas, final float x, final float y,
-            final TextRenderer renderer, final int cx, final int selx1, final int selx2, final String imeText, final int cursorMode) {
+                               final TextRenderer renderer, final int cx, final int selx1, final int selx2, final String imeText, final int cursorMode) {
         char[] line;
         StyleRow color;
         int cursorWidth = 1;
@@ -188,16 +188,16 @@ class TranscriptScreen implements Screen {
                 char[] blank = new char[selx2 - selx1];
                 Arrays.fill(blank, ' ');
                 renderer.drawTextRun(canvas, x, y, selx1, selx2 - selx1,
-                                blank, 0, 1, true, defaultStyle,
-                                cx, 0, 1, 1, cursorMode);
+                                     blank, 0, 1, true, defaultStyle,
+                                     cx, 0, 1, 1, cursorMode);
             }
             if (cx != -1) {
                 char[] blank = new char[1];
                 Arrays.fill(blank, ' ');
                 // We need to draw the cursor
                 renderer.drawTextRun(canvas, x, y, cx, 1,
-                        blank, 0, 1, true, defaultStyle,
-                        cx, 0, 1, 1, cursorMode);
+                                     blank, 0, 1, true, defaultStyle,
+                                     cx, 0, 1, 1, cursorMode);
             }
 
             return;
@@ -243,10 +243,10 @@ class TranscriptScreen implements Screen {
                     || (width > 0 && forceFlushRun)) {
                 if (lastRunStart >= 0) {
                     renderer.drawTextRun(canvas, x, y, lastRunStart, runWidth,
-                            line,
-                            lastRunStartIndex, index - lastRunStartIndex,
-                            lastSelectionStyle, lastStyle,
-                            cx, cursorIndex, cursorIncr, cursorWidth, cursorMode);
+                                         line,
+                                         lastRunStartIndex, index - lastRunStartIndex,
+                                         lastSelectionStyle, lastStyle,
+                                         cx, cursorIndex, cursorIncr, cursorWidth, cursorMode);
                 }
                 lastStyle = style;
                 lastSelectionStyle = selectionStyle;
@@ -278,10 +278,10 @@ class TranscriptScreen implements Screen {
         }
         if (lastRunStart >= 0) {
             renderer.drawTextRun(canvas, x, y, lastRunStart, runWidth,
-                    line,
-                    lastRunStartIndex, index - lastRunStartIndex,
-                    lastSelectionStyle, lastStyle,
-                    cx, cursorIndex, cursorIncr, cursorWidth, cursorMode);
+                                 line,
+                                 lastRunStartIndex, index - lastRunStartIndex,
+                                 lastSelectionStyle, lastStyle,
+                                 cx, cursorIndex, cursorIncr, cursorWidth, cursorMode);
         }
 
         if (cx >= 0 && imeText.length() > 0) {
@@ -289,10 +289,10 @@ class TranscriptScreen implements Screen {
             int imeOffset = imeText.length() - imeLength;
             int imePosition = Math.min(cx, columns - imeLength);
             renderer.drawTextRun(canvas, x, y, imePosition, imeLength, imeText.toCharArray(),
-                    imeOffset, imeLength, true, TextStyle.encode(0x0f, 0x00, TextStyle.fxNormal),
-                    -1, 0, 0, 0, 0);
+                                 imeOffset, imeLength, true, TextStyle.encode(0x0f, 0x00, TextStyle.fxNormal),
+                                 -1, 0, 0, 0, 0);
         }
-     }
+    }
 
     /**
      * Get the count of active rows.
@@ -377,7 +377,7 @@ class TranscriptScreen implements Screen {
                 if (c == 0) {
                     break;
                 }
-                
+
                 int style = defaultColor;
                 try {
                     if (rowColorBuffer != null) {
@@ -445,7 +445,7 @@ class TranscriptScreen implements Screen {
     }
 
     public void resize(final int columns, final int rows, final int style) {
-        // Ensure backing store will be large enough to hold the whole screen 
+        // Ensure backing store will be large enough to hold the whole screen
         if (rows > mTotalRows) {
             mTotalRows = rows;
         }

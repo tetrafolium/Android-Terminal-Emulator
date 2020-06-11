@@ -37,7 +37,8 @@ public class LaunchActivity extends Activity
                 Intent intent = new Intent(context, TermActivity.class);
                 intent.putExtra("type", "local");
                 startActivity(intent);
-            }});
+            }
+        });
 
         final EditText hostEdit = (EditText) findViewById(R.id.hostname);
         addClickListener(R.id.launchTelnet, new OnClickListener() {
@@ -47,7 +48,8 @@ public class LaunchActivity extends Activity
                 String hostname = hostEdit.getText().toString();
                 intent.putExtra("host", hostname);
                 startActivity(intent);
-            }});
+            }
+        });
     }
 
     private void addClickListener(final int buttonId, final OnClickListener onClickListener) {

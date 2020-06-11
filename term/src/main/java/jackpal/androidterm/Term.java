@@ -486,7 +486,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         super.onDestroy();
 
         PreferenceManager.getDefaultSharedPreferences(this)
-                .unregisterOnSharedPreferenceChangeListener(this);
+        .unregisterOnSharedPreferenceChangeListener(this);
 
         if (mStopServiceOnFinish) {
             stopService(TSIntent);
@@ -619,7 +619,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(token, 0);
             }
-        }.start();
+        } .start();
     }
 
     @Override
@@ -644,7 +644,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     private boolean checkHaveFullHwKeyboard(final Configuration c) {
         return (c.keyboard == Configuration.KEYBOARD_QWERTY)
-            && (c.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO);
+               && (c.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO);
     }
 
     @Override
@@ -699,9 +699,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         } else if (id == R.id.menu_toggle_wifilock) {
             doToggleWifiLock();
         } else if  (id == R.id.action_help) {
-                Intent openHelp = new Intent(Intent.ACTION_VIEW,
-                Uri.parse(getString(R.string.help_url)));
-                startActivity(openHelp);
+            Intent openHelp = new Intent(Intent.ACTION_VIEW,
+                                         Uri.parse(getString(R.string.help_url)));
+            startActivity(openHelp);
         }
         // Hide the action bar if appropriate
         if (mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES) {
@@ -741,10 +741,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             }
         };
         b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-           public void onClick(final DialogInterface dialog, final int id) {
-               dialog.dismiss();
-               mHandler.post(closeWindow);
-           }
+            public void onClick(final DialogInterface dialog, final int id) {
+                dialog.dismiss();
+                mHandler.post(closeWindow);
+            }
         });
         b.setNegativeButton(android.R.string.no, null);
         b.show();
@@ -808,15 +808,15 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         // huge number simply opens new window
         // TODO: add a way to restrict max number of windows per caller (possibly via reusing BoundSession)
         switch (action) {
-            case RemoteInterface.PRIVACT_OPEN_NEW_WINDOW:
-                onResumeSelectWindow = Integer.MAX_VALUE;
-                break;
-            case RemoteInterface.PRIVACT_SWITCH_WINDOW:
-                int target = intent.getIntExtra(RemoteInterface.PRIVEXTRA_TARGET_WINDOW, -1);
-                if (target >= 0) {
-                    onResumeSelectWindow = target;
-                }
-                break;
+        case RemoteInterface.PRIVACT_OPEN_NEW_WINDOW:
+            onResumeSelectWindow = Integer.MAX_VALUE;
+            break;
+        case RemoteInterface.PRIVACT_SWITCH_WINDOW:
+            int target = intent.getIntExtra(RemoteInterface.PRIVEXTRA_TARGET_WINDOW, -1);
+            if (target >= 0) {
+                onResumeSelectWindow = target;
+            }
+            break;
         }
     }
 
@@ -839,41 +839,41 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     @Override
     public void onCreateContextMenu(final ContextMenu menu, final View v,
-            final ContextMenuInfo menuInfo) {
-      super.onCreateContextMenu(menu, v, menuInfo);
-      menu.setHeaderTitle(R.string.edit_text);
-      menu.add(0, SELECT_TEXT_ID, 0, R.string.select_text);
-      menu.add(0, COPY_ALL_ID, 0, R.string.copy_all);
-      menu.add(0, PASTE_ID, 0, R.string.paste);
-      menu.add(0, SEND_CONTROL_KEY_ID, 0, R.string.send_control_key);
-      menu.add(0, SEND_FN_KEY_ID, 0, R.string.send_fn_key);
-      if (!canPaste()) {
-          menu.getItem(PASTE_ID).setEnabled(false);
-      }
+                                    final ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.setHeaderTitle(R.string.edit_text);
+        menu.add(0, SELECT_TEXT_ID, 0, R.string.select_text);
+        menu.add(0, COPY_ALL_ID, 0, R.string.copy_all);
+        menu.add(0, PASTE_ID, 0, R.string.paste);
+        menu.add(0, SEND_CONTROL_KEY_ID, 0, R.string.send_control_key);
+        menu.add(0, SEND_FN_KEY_ID, 0, R.string.send_fn_key);
+        if (!canPaste()) {
+            menu.getItem(PASTE_ID).setEnabled(false);
+        }
     }
 
     @Override
     public boolean onContextItemSelected(final MenuItem item) {
-          switch (item.getItemId()) {
-          case SELECT_TEXT_ID:
+        switch (item.getItemId()) {
+        case SELECT_TEXT_ID:
             getCurrentEmulatorView().toggleSelectingText();
             return true;
-          case COPY_ALL_ID:
+        case COPY_ALL_ID:
             doCopyAll();
             return true;
-          case PASTE_ID:
+        case PASTE_ID:
             doPaste();
             return true;
-          case SEND_CONTROL_KEY_ID:
+        case SEND_CONTROL_KEY_ID:
             doSendControlKey();
             return true;
-          case SEND_FN_KEY_ID:
+        case SEND_FN_KEY_ID:
             doSendFnKey();
             return true;
-          default:
+        default:
             return super.onContextItemSelected(item);
-          }
         }
+    }
 
     @Override
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
@@ -956,7 +956,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     private boolean canPaste() {
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
-                .getManager(getApplicationContext());
+                                      .getManager(getApplicationContext());
         if (clip.hasText()) {
             return true;
         }
@@ -982,8 +982,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             // wants to handle the intent.
             String addr = "user@example.com";
             Intent intent =
-                    new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"
-                            + addr));
+                new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"
+                           + addr));
 
             String subject = getString(R.string.email_transcript_subject);
             String title = session.getTitle();
@@ -992,21 +992,21 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             }
             intent.putExtra(Intent.EXTRA_SUBJECT, subject);
             intent.putExtra(Intent.EXTRA_TEXT,
-                    session.getTranscriptText().trim());
+                            session.getTranscriptText().trim());
             try {
                 startActivity(Intent.createChooser(intent,
-                        getString(R.string.email_transcript_chooser_title)));
+                                                   getString(R.string.email_transcript_chooser_title)));
             } catch (ActivityNotFoundException e) {
                 Toast.makeText(this,
-                        R.string.email_transcript_no_email_activity_found,
-                        Toast.LENGTH_LONG).show();
+                               R.string.email_transcript_no_email_activity_found,
+                               Toast.LENGTH_LONG).show();
             }
         }
     }
 
     private void doCopyAll() {
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
-                .getManager(getApplicationContext());
+                                      .getManager(getApplicationContext());
         clip.setText(getCurrentTermSession().getTranscriptText().trim());
     }
 
@@ -1015,7 +1015,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             return;
         }
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
-                .getManager(getApplicationContext());
+                                      .getManager(getApplicationContext());
         CharSequence paste = clip.getText();
         getCurrentTermSession().write(paste.toString());
     }
@@ -1034,34 +1034,34 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         dialog.setTitle(r.getString(R.string.control_key_dialog_title));
         dialog.setMessage(
             formatMessage(mSettings.getControlKeyId(), TermSettings.CONTROL_KEY_ID_NONE,
-                r, R.array.control_keys_short_names,
-                R.string.control_key_dialog_control_text,
-                R.string.control_key_dialog_control_disabled_text, "CTRLKEY")
+                          r, R.array.control_keys_short_names,
+                          R.string.control_key_dialog_control_text,
+                          R.string.control_key_dialog_control_disabled_text, "CTRLKEY")
             + "\n\n"
             + formatMessage(mSettings.getFnKeyId(), TermSettings.FN_KEY_ID_NONE,
-                r, R.array.fn_keys_short_names,
-                R.string.control_key_dialog_fn_text,
-                R.string.control_key_dialog_fn_disabled_text, "FNKEY"));
-         dialog.show();
-     }
+                            r, R.array.fn_keys_short_names,
+                            R.string.control_key_dialog_fn_text,
+                            R.string.control_key_dialog_fn_disabled_text, "FNKEY"));
+        dialog.show();
+    }
 
-     private String formatMessage(final int keyId, final int disabledKeyId,
-         final Resources r, final int arrayId,
-         final int enabledId,
-         final int disabledId, final String regex) {
-         if (keyId == disabledKeyId) {
-             return r.getString(disabledId);
-         }
-         String[] keyNames = r.getStringArray(arrayId);
-         String keyName = keyNames[keyId];
-         String template = r.getString(enabledId);
-         String result = template.replaceAll(regex, keyName);
-         return result;
+    private String formatMessage(final int keyId, final int disabledKeyId,
+                                 final Resources r, final int arrayId,
+                                 final int enabledId,
+                                 final int disabledId, final String regex) {
+        if (keyId == disabledKeyId) {
+            return r.getString(disabledId);
+        }
+        String[] keyNames = r.getStringArray(arrayId);
+        String keyName = keyNames[keyId];
+        String template = r.getString(enabledId);
+        String result = template.replaceAll(regex, keyName);
+        return result;
     }
 
     private void doToggleSoftKeyboard() {
         InputMethodManager imm = (InputMethodManager)
-            getSystemService(Context.INPUT_METHOD_SERVICE);
+                                 getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
     }

@@ -196,9 +196,9 @@ public class TermSettings {
         mUTF8ByDefault = readBooleanPref(UTF8_KEY, mUTF8ByDefault);
         mBackKeyAction = readIntPref(BACKACTION_KEY, mBackKeyAction, BACK_KEY_MAX);
         mControlKeyId = readIntPref(CONTROLKEY_KEY, mControlKeyId,
-                CONTROL_KEY_SCHEMES.length - 1);
+                                    CONTROL_KEY_SCHEMES.length - 1);
         mFnKeyId = readIntPref(FNKEY_KEY, mFnKeyId,
-                FN_KEY_SCHEMES.length - 1);
+                               FN_KEY_SCHEMES.length - 1);
         mUseCookedIME = readIntPref(IME_KEY, mUseCookedIME, 1);
         mShell = readStringPref(SHELL_KEY, mShell);
         mInitialCommand = readStringPref(INITIALCOMMAND_KEY, mInitialCommand);
@@ -211,7 +211,7 @@ public class TermSettings {
         mAltSendsEsc = readBooleanPref(ALT_SENDS_ESC, mAltSendsEsc);
         mMouseTracking = readBooleanPref(MOUSE_TRACKING, mMouseTracking);
         mUseKeyboardShortcuts = readBooleanPref(USE_KEYBOARD_SHORTCUTS,
-                mUseKeyboardShortcuts);
+                                                mUseKeyboardShortcuts);
         mPrefs = null;  // we leak a Context if we hold on to this
     }
 
@@ -219,7 +219,7 @@ public class TermSettings {
         int val;
         try {
             val = Integer.parseInt(
-                mPrefs.getString(key, Integer.toString(defaultValue)));
+                      mPrefs.getString(key, Integer.toString(defaultValue)));
         } catch (NumberFormatException e) {
             val = defaultValue;
         }
@@ -289,9 +289,12 @@ public class TermSettings {
 
     public int getBackKeyCharacter() {
         switch (mBackKeyAction) {
-            case BACK_KEY_SENDS_ESC: return 27;
-            case BACK_KEY_SENDS_TAB: return 9;
-            default: return 0;
+        case BACK_KEY_SENDS_ESC:
+            return 27;
+        case BACK_KEY_SENDS_TAB:
+            return 9;
+        default:
+            return 0;
         }
     }
 

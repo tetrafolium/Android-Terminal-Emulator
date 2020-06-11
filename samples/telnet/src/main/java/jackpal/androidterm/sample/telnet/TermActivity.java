@@ -175,7 +175,7 @@ public class TermActivity extends Activity
                 new ProcessBuilder(execPath, "/system/bin/sh", "-");
         */
         ProcessBuilder execBuild =
-                new ProcessBuilder("/system/bin/sh", "-");
+            new ProcessBuilder("/system/bin/sh", "-");
         execBuild.redirectErrorStream(true);
         Process exec = null;
         try {
@@ -242,7 +242,7 @@ public class TermActivity extends Activity
                 // Notify the main thread of the connection
                 mHandler.sendEmptyMessage(MSG_CONNECTED);
             }
-        }.start();
+        } .start();
     }
 
     /**

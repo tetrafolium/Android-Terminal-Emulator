@@ -42,7 +42,7 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
     public Bitmap4x8FontRenderer(final Resources resources, final ColorScheme scheme) {
         super(scheme);
         int fontResource = AndroidCompat.SDK <= 3 ? R.drawable.atari_small
-                : R.drawable.atari_small_nodpi;
+                           : R.drawable.atari_small_nodpi;
         mFont = BitmapFactory.decodeResource(resources, fontResource);
         mPaint = new Paint();
         mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
@@ -61,15 +61,15 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
     }
 
     public void drawTextRun(final Canvas canvas, final float x, final float y,
-            final int lineOffset, final int runWidth, final char[] text, final int index, final int count,
-            final boolean selectionStyle, final int textStyle,
-            final int cursorOffset, final int cursorIndex, final int cursorIncr, final int cursorWidth, final int cursorMode) {
+                            final int lineOffset, final int runWidth, final char[] text, final int index, final int count,
+                            final boolean selectionStyle, final int textStyle,
+                            final int cursorOffset, final int cursorIndex, final int cursorIncr, final int cursorWidth, final int cursorMode) {
         int foreColor = TextStyle.decodeForeColor(textStyle);
         int backColor = TextStyle.decodeBackColor(textStyle);
         int effect = TextStyle.decodeEffect(textStyle);
 
         boolean inverse = mReverseVideo
-                ^ ((effect & (TextStyle.fxInverse | TextStyle.fxItalic)) != 0);
+                          ^ ((effect & (TextStyle.fxInverse | TextStyle.fxItalic)) != 0);
         if (inverse) {
             int temp = foreColor;
             foreColor = backColor;
@@ -101,13 +101,13 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
 
         // The cursor is too small to show the cursor mode.
         if (lineOffset <= cursorOffset && cursorOffset < (lineOffset + count)) {
-          drawTextRunHelper(canvas, x, y, cursorOffset, text, cursorOffset - lineOffset, 1,
-                  TextStyle.ciCursorForeground, TextStyle.ciCursorBackground);
+            drawTextRunHelper(canvas, x, y, cursorOffset, text, cursorOffset - lineOffset, 1,
+                              TextStyle.ciCursorForeground, TextStyle.ciCursorBackground);
         }
     }
 
     private void drawTextRunHelper(final Canvas canvas, final float x, final float y, final int lineOffset, final char[] text,
-            final int index, final int count, final int foreColor, final int backColor) {
+                                   final int index, final int count, final int foreColor, final int backColor) {
         setColorMatrix(mPalette[foreColor], mPalette[backColor]);
         int destX = (int) x + kCharacterWidth * lineOffset;
         int destY = (int) y;
@@ -125,7 +125,7 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
                 int srcX = cellX * kCharacterWidth;
                 int srcY = cellY * kCharacterHeight;
                 srcRect.set(srcX, srcY,
-                        srcX + kCharacterWidth, srcY + kCharacterHeight);
+                            srcX + kCharacterWidth, srcY + kCharacterHeight);
                 destRect.left = destX;
                 destRect.right = destX + kCharacterWidth;
                 canvas.drawBitmap(mFont, srcRect, destRect, mPaint);

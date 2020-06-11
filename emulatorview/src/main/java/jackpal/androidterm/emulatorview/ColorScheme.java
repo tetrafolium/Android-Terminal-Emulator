@@ -52,7 +52,7 @@ public class ColorScheme {
 
     private static int distance(final int a, final int b) {
         return channelDistance(a, b, 0) * 3 + channelDistance(a, b, 1) * 5
-                + channelDistance(a, b, 2);
+               + channelDistance(a, b, 2);
     }
 
     private static int channelDistance(final int a, final int b, final int channel) {

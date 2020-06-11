@@ -32,11 +32,14 @@ import android.content.Context;
    android.app.Service */
 public class ServiceForegroundCompat {
     private static Class<?>[] mSetForegroundSig = new Class[] {
-        boolean.class };
+        boolean.class
+    };
     private static Class<?>[] mStartForegroundSig = new Class[] {
-        int.class, Notification.class };
+        int.class, Notification.class
+    };
     private static Class<?>[] mStopForegroundSig = new Class[] {
-        boolean.class };
+        boolean.class
+    };
 
     private Service service;
     private NotificationManager mNM;

@@ -44,7 +44,7 @@ static JNINativeMethod method_table[] = {
 
 int init_FileCompat(JNIEnv *env) {
     if (!registerNativeMethods(env, classPathName, method_table,
-                 sizeof(method_table) / sizeof(method_table[0]))) {
+                               sizeof(method_table) / sizeof(method_table[0]))) {
         return JNI_FALSE;
     }
 

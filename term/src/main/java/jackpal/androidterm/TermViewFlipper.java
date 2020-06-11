@@ -58,11 +58,11 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     private static final int SCREEN_CHECK_PERIOD = 1000;
     private final Handler mHandler = new Handler();
     private Runnable mCheckSize = new Runnable() {
-            public void run() {
-                adjustChildSize();
-                mHandler.postDelayed(this, SCREEN_CHECK_PERIOD);
-            }
-        };
+        public void run() {
+            adjustChildSize();
+            mHandler.postDelayed(this, SCREEN_CHECK_PERIOD);
+        }
+    };
 
     class ViewFlipperIterator implements Iterator<View> {
         int pos = 0;
@@ -97,7 +97,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         updateVisibleRect();
         Rect visible = mVisibleRect;
         mChildParams = new LayoutParams(visible.width(), visible.height(),
-            Gravity.TOP | Gravity.LEFT);
+                                        Gravity.TOP | Gravity.LEFT);
     }
 
     public void updatePrefs(final TermSettings settings) {

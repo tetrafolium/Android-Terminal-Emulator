@@ -160,11 +160,11 @@ public class TermSession {
                         int offset = 0;
                         while (read > 0) {
                             int written = mByteQueue.write(mBuffer,
-                                    offset, read);
+                                                           offset, read);
                             offset += written;
                             read -= written;
                             mMsgHandler.sendMessage(
-                                    mMsgHandler.obtainMessage(NEW_INPUT));
+                                mMsgHandler.obtainMessage(NEW_INPUT));
                         }
                     }
                 } catch (IOException e) {
@@ -336,8 +336,8 @@ public class TermSession {
     private void notifyNewOutput() {
         Handler writerHandler = mWriterHandler;
         if (writerHandler == null) {
-           /* Writer thread isn't started -- will pick up data once it does */
-           return;
+            /* Writer thread isn't started -- will pick up data once it does */
+            return;
         }
         writerHandler.sendEmptyMessage(NEW_OUTPUT);
     }

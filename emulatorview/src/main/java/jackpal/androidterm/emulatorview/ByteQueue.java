@@ -33,10 +33,10 @@ class ByteQueue {
     }
 
     public int read(final byte[] buffer, final int offset, final int length)
-        throws InterruptedException {
+    throws InterruptedException {
         if (length + offset > buffer.length) {
             throw
-                new IllegalArgumentException("length + offset > buffer.length");
+            new IllegalArgumentException("length + offset > buffer.length");
         }
         if (length < 0) {
             throw
@@ -83,7 +83,7 @@ class ByteQueue {
     throws InterruptedException {
         if (length + offset > buffer.length) {
             throw
-                new IllegalArgumentException("length + offset > buffer.length");
+            new IllegalArgumentException("length + offset > buffer.length");
         }
         if (length < 0) {
             throw

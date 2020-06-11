@@ -128,19 +128,19 @@ class TermKeyListener {
         mKeyCodes[KEYCODE_NUMPAD_ENTER] = "\015";
         mKeyCodes[KEYCODE_NUMPAD_EQUALS] = "=";
         mKeyCodes[KEYCODE_NUMPAD_COMMA] = ",";
-/*
-        mKeyCodes[KEYCODE_NUMPAD_DOT] = ".";
-        mKeyCodes[KEYCODE_NUMPAD_0] = "0";
-        mKeyCodes[KEYCODE_NUMPAD_1] = "1";
-        mKeyCodes[KEYCODE_NUMPAD_2] = "2";
-        mKeyCodes[KEYCODE_NUMPAD_3] = "3";
-        mKeyCodes[KEYCODE_NUMPAD_4] = "4";
-        mKeyCodes[KEYCODE_NUMPAD_5] = "5";
-        mKeyCodes[KEYCODE_NUMPAD_6] = "6";
-        mKeyCodes[KEYCODE_NUMPAD_7] = "7";
-        mKeyCodes[KEYCODE_NUMPAD_8] = "8";
-        mKeyCodes[KEYCODE_NUMPAD_9] = "9";
-*/
+        /*
+                mKeyCodes[KEYCODE_NUMPAD_DOT] = ".";
+                mKeyCodes[KEYCODE_NUMPAD_0] = "0";
+                mKeyCodes[KEYCODE_NUMPAD_1] = "1";
+                mKeyCodes[KEYCODE_NUMPAD_2] = "2";
+                mKeyCodes[KEYCODE_NUMPAD_3] = "3";
+                mKeyCodes[KEYCODE_NUMPAD_4] = "4";
+                mKeyCodes[KEYCODE_NUMPAD_5] = "5";
+                mKeyCodes[KEYCODE_NUMPAD_6] = "6";
+                mKeyCodes[KEYCODE_NUMPAD_7] = "7";
+                mKeyCodes[KEYCODE_NUMPAD_8] = "8";
+                mKeyCodes[KEYCODE_NUMPAD_9] = "9";
+        */
         // Keypad is used for cursor/func keys
         mKeyCodes[KEYCODE_NUMPAD_DOT] = mKeyCodes[KEYCODE_FORWARD_DEL];
         mKeyCodes[KEYCODE_NUMPAD_0] = mKeyCodes[KEYCODE_INSERT];
@@ -509,7 +509,7 @@ class TermKeyListener {
      *
      */
     public void keyDown(final int keyCode, final KeyEvent event, final boolean appMode,
-            final boolean allowToggle) throws IOException {
+                        final boolean allowToggle) throws IOException {
         if (LOG_KEYS) {
             Log.i(TAG, "keyDown(" + keyCode + "," + event + "," + appMode + "," + allowToggle + ")");
         }
@@ -557,7 +557,7 @@ class TermKeyListener {
             int metaState = event.getMetaState();
             chordedCtrl = ((META_CTRL_ON & metaState) != 0);
             boolean effectiveCaps = allowToggle
-                    && (mCapKey.isActive());
+                                    && (mCapKey.isActive());
             boolean effectiveAlt = allowToggle && mAltKey.isActive();
             int effectiveMetaState = metaState & (~META_CTRL_MASK);
             if (effectiveCaps) {
@@ -568,7 +568,7 @@ class TermKeyListener {
             }
             if (effectiveAlt) {
                 if (mAltSendsEsc) {
-                    mTermSession.write(new byte[]{0x1b}, 0, 1);
+                    mTermSession.write(new byte[] {0x1b}, 0, 1);
                     effectiveMetaState &= ~KeyEvent.META_ALT_MASK;
                 } else if (SUPPORT_8_BIT_META) {
                     setHighBit = true;
@@ -584,7 +584,7 @@ class TermKeyListener {
 
             if ((metaState & KeyEvent.META_META_ON) != 0) {
                 if (mAltSendsEsc) {
-                    mTermSession.write(new byte[]{0x1b}, 0, 1);
+                    mTermSession.write(new byte[] {0x1b}, 0, 1);
                     effectiveMetaState &= ~KeyEvent.META_META_MASK;
                 } else {
                     if (SUPPORT_8_BIT_META) {
@@ -612,7 +612,7 @@ class TermKeyListener {
             }
 
             break;
-            }
+        }
         }
 
         boolean effectiveControl = chordedCtrl || mHardwareControlKey || (allowToggle && mControlKey.isActive());
@@ -640,9 +640,9 @@ class TermKeyListener {
 
     private void updateCursorMode() {
         mCursorMode = getCursorModeHelper(mCapKey, TextRenderer.MODE_SHIFT_SHIFT)
-                | getCursorModeHelper(mAltKey, TextRenderer.MODE_ALT_SHIFT)
-                | getCursorModeHelper(mControlKey, TextRenderer.MODE_CTRL_SHIFT)
-                | getCursorModeHelper(mFnKey, TextRenderer.MODE_FN_SHIFT);
+                      | getCursorModeHelper(mAltKey, TextRenderer.MODE_ALT_SHIFT)
+                      | getCursorModeHelper(mControlKey, TextRenderer.MODE_CTRL_SHIFT)
+                      | getCursorModeHelper(mFnKey, TextRenderer.MODE_FN_SHIFT);
     }
 
     private static int getCursorModeHelper(final ModifierKey key, final int shift) {
@@ -654,9 +654,9 @@ class TermKeyListener {
             return true;
         }
         KeyCharacterMapCompat kcm = KeyCharacterMapCompat.wrap(
-                KeyCharacterMap.load(event.getDeviceId()));
+                                        KeyCharacterMap.load(event.getDeviceId()));
         return kcm.getModifierBehaviour()
-                == KeyCharacterMapCompat.MODIFIER_BEHAVIOR_CHORDED_OR_TOGGLED;
+               == KeyCharacterMapCompat.MODIFIER_BEHAVIOR_CHORDED_OR_TOGGLED;
     }
 
     public boolean handleKeyCode(final int keyCode, final KeyEvent event, final boolean appMode) throws IOException {

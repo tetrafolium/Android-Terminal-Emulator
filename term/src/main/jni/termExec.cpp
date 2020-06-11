@@ -31,7 +31,7 @@
 #include "termExec.h"
 
 static void android_os_Exec_setPtyWindowSize(JNIEnv *env, jobject clazz,
-    jint fd, jint row, jint col, jint xpixel, jint ypixel)
+        jint fd, jint row, jint col, jint xpixel, jint ypixel)
 {
     struct winsize sz;
 
@@ -76,15 +76,17 @@ static void android_os_Exec_setPtyUTF8Mode(JNIEnv *env, jobject clazz, jint fd, 
 
 static const char *classPathName = "jackpal/androidterm/Exec";
 static JNINativeMethod method_table[] = {
-    { "setPtyWindowSizeInternal", "(IIIII)V",
-        (void*) android_os_Exec_setPtyWindowSize},
-    { "setPtyUTF8ModeInternal", "(IZ)V",
-        (void*) android_os_Exec_setPtyUTF8Mode}
+    {   "setPtyWindowSizeInternal", "(IIIII)V",
+        (void*) android_os_Exec_setPtyWindowSize
+    },
+    {   "setPtyUTF8ModeInternal", "(IZ)V",
+        (void*) android_os_Exec_setPtyUTF8Mode
+    }
 };
 
 int init_Exec(JNIEnv *env) {
     if (!registerNativeMethods(env, classPathName, method_table,
-                 sizeof(method_table) / sizeof(method_table[0]))) {
+                               sizeof(method_table) / sizeof(method_table[0]))) {
         return JNI_FALSE;
     }
 

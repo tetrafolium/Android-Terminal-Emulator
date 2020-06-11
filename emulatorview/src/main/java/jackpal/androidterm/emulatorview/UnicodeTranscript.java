@@ -105,7 +105,7 @@ class UnicodeTranscript {
     private int externalToInternalRow(final int extRow) {
         if (extRow < -mActiveTranscriptRows || extRow > mScreenRows) {
             String errorMessage = "externalToInternalRow " + extRow
-                + " " + mScreenRows + " " + mActiveTranscriptRows;
+                                  + " " + mScreenRows + " " + mActiveTranscriptRows;
             Log.e(TAG, errorMessage);
             throw new IllegalArgumentException(errorMessage);
         }
@@ -531,7 +531,7 @@ class UnicodeTranscript {
         }
 
         if ((codePoint >= 0x1160 && codePoint <= 0x11FF)
-            || (codePoint >= 0xD7B0 && codePoint <= 0xD7FF)) {
+                || (codePoint >= 0xD7B0 && codePoint <= 0xD7FF)) {
             if (AndroidCompat.SDK >= HANGUL_CONJOINING_MIN_SDK) {
                 /* Treat Hangul jamo medial vowels and final consonants as
                  * combining characters with width 0 to make jamo composition
@@ -1071,7 +1071,7 @@ class FullUnicodeLine {
 
             ++shift;
         }
-        
+
         /*
          * Handle cases where we need to clobber the contents of the next
          * column in order to preserve column alignment

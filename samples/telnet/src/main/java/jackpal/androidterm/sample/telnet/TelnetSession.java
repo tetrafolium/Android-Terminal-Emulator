@@ -150,9 +150,9 @@ public class TelnetSession extends TermSession
     /* Send data to the server, buffering it first if necessary */
     private void doWrite(final byte[] data, final int offset, final int count) {
         if (peerSuppressedGoAhead) {
-           // No need to buffer -- send it straight to the server
-           super.write(data, offset, count);
-           return;
+            // No need to buffer -- send it straight to the server
+            super.write(data, offset, count);
+            return;
         }
 
         /* Flush the buffer if it's full ... not strictly correct, but better
@@ -179,7 +179,7 @@ public class TelnetSession extends TermSession
     private void doLocalEcho(final byte[] data) {
         if (DEBUG) {
             Log.d(TAG, "echoing "
-                    + Arrays.toString(data) + " back to terminal");
+                  + Arrays.toString(data) + " back to terminal");
         }
         appendToEmulator(data, 0, data.length);
         notifyUpdate();
